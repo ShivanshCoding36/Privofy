@@ -1,0 +1,98 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.credit-popup {
+  background: white;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.popup-header {
+  background: linear-gradient(135deg, #3399ff 0%, #5d7df9 100%);
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.popup-content {
+  padding: 2rem;
+  text-align: center;
+}
+
+.credit-icon {
+  font-size: 3rem;
+  color: #ff9800;
+  margin-bottom: 1.5rem;
+}
+
+.popup-content p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.highlight {
+  color: #3399ff;
+  font-weight: 700;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.buy-credits-button {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #3399ff 0%, #5d7df9 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.buy-credits-button a {
+  color: white;
+  text-decoration: none;
+}
+
+.cancel-button {
+  padding: 0.75rem 1.5rem;
+  background: #f1f1f1;
+  color: #333;
+  border: none;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+} 

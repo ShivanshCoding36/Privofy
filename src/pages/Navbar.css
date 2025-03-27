@@ -1,0 +1,45 @@
+/* src/components/Navbar.css */
+.navbar {
+  background-color: #fff;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar.scrolled {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-container img {
+  height: 40px;
+}
+
+.nav-links a {
+  margin: 0 1rem;
+  color: #333;
+  text-decoration: none;
+}
+
+.nav-links a.active {
+  font-weight: bold;
+  color: #3399ff;
+}
+
+.auth-buttons .login-btn,
+.auth-buttons .logout-btn {
+  background: #3399ff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}

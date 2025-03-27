@@ -1,0 +1,144 @@
+.air-quality-card {
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+  margin-bottom: 1.5rem;
+}
+
+.card-header h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.card-header p {
+  color: #666;
+  margin: 0;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.metric-item {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.metric-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
+}
+
+.metric-name {
+  font-size: 1rem;
+  color: #666;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.metric-name i {
+  color: #3399ff;
+}
+
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.metric-value.excellent {
+  color: #0bcd12;
+}
+
+.metric-value.good {
+  color: #74af4c;
+}
+
+.metric-value.moderate {
+  color: #ff9800;
+}
+.metric-value.bad {
+  color: #b71c1c;
+}
+
+.health-bar {
+  height: 8px;
+  width: 100%;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.health-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.health-bar-fill.good {
+  background: linear-gradient(90deg, #94c781 0%, #74af4c 100%);
+}
+
+.health-bar-fill.moderate {
+  background: linear-gradient(90deg, #ffb74d 0%, #ff9800 100%);
+}
+
+.health-bar-fill.unhealthy {
+  background: linear-gradient(90deg, #e57373 0%, #f44336 100%);
+}
+
+.health-bar-fill.very-unhealthy {
+  background: linear-gradient(90deg, #ba68c8 0%, #9c27b0 100%);
+}
+
+.health-bar-fill.excellent {
+  background: linear-gradient(90deg, #27ba2c 0%, #04c60a 100%);
+}
+
+.weather-info {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.weather-icon {
+  font-size: 2.5rem;
+  color: #3399ff;
+}
+
+.weather-details {
+  flex: 1;
+}
+
+.weather-temp {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.3rem 0;
+}
+
+.weather-desc {
+  color: #666;
+  margin: 0;
+} 
+
+.metric-icon {
+  font-size: 1.8rem;
+  color: #3399ff; /* Customize the color */
+  margin-right: 0.5rem;
+}

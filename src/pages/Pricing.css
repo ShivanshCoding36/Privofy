@@ -1,0 +1,169 @@
+.pricing-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.pricing-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.pricing-header h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin: 0 0 1rem 0;
+}
+
+.pricing-header p {
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.pricing-table-container {
+  margin-bottom: 4rem;
+}
+
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-table thead {
+  background: linear-gradient(135deg, #3399ff 0%, #5d7df9 100%);
+  color: white;
+}
+
+.pricing-table th {
+  padding: 1.5rem;
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+.pricing-table tbody tr {
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.pricing-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.pricing-table tbody tr.popular {
+  background: #f0f7ff;
+}
+
+.pricing-table td {
+  padding: 1.5rem;
+  border-bottom: 1px solid #eee;
+  font-size: 1.1rem;
+  position: relative;
+}
+
+.pricing-table tr:last-child td {
+  border-bottom: none;
+}
+
+.popular-tag {
+  position: absolute;
+  top: 0.5rem;
+  right: 1.5rem;
+  background: #ff9800;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.buy-button {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #3399ff 0%, #5d7df9 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buy-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(93, 125, 249, 0.4);
+}
+
+.pricing-info {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-info h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0 0 1.5rem 0;
+}
+
+.pricing-info ul {
+  padding-left: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.pricing-info li {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.pricing-info p {
+  font-size: 1.2rem;
+  color: #3399ff;
+  font-weight: 500;
+  margin: 0;
+}
+
+.paypal-container {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.paypal-container h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0 0 1rem 0;
+}
+
+.paypal-container p {
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+.paypal-buttons {
+  max-width: 500px;
+  margin: 0 auto 1.5rem;
+}
+
+.cancel-button {
+  padding: 0.75rem 1.5rem;
+  background: #f1f1f1;
+  color: #333;
+  border: none;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-button:hover {
+  background: #e5e5e5;
+} 
