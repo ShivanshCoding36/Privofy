@@ -36,6 +36,7 @@ const Home = () => {
           >
             Analyse and understand Privacy Policy before accepting
           </motion.p>
+          
           <motion.div 
             className="hero-buttons"
             initial={{ scale: 0.8 }}
@@ -44,6 +45,21 @@ const Home = () => {
           >
             <Link to="/signup" className="primary-button">Get Started</Link>
           </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0, x: -50 }} 
+            whileInView={{ opacity: 1, x: 0 }} 
+            transition={{ duration: 1 }}
+          >
+            Privofy
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, x: 50 }} 
+            whileInView={{ opacity: 1, x: 0 }} 
+            transition={{ duration: 1, delay: 0.3 }}
+          >
+            Privacy decoded, risks revealed 
+          </motion.p>
+          
         </div>
       </motion.section>
 
