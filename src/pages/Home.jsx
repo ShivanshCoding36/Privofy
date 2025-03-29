@@ -85,7 +85,7 @@ const Home = () => {
               className="scared aqi-value"
               whileHover={{ scale: 1.05 }}
             >
-              60%
+              90%
             </motion.div>
           </div>
           <div className="pollutant-details">
@@ -97,7 +97,7 @@ const Home = () => {
               <span>11 %</span>
             </motion.div>
           </div>
-          <span> A survey conducted by CUTS International</span>
+          <span> A survey conducted by CUTS International and exploding topics</span>
         </motion.div>
       </section>
 
