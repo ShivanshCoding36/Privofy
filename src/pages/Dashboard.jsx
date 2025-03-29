@@ -76,10 +76,6 @@ const Dashboard = () => {
       setAiUser(userImpact);
       const txt = `Impact: ${impact}, Takeaways: ${userImpact}, Summary: ${summary}`;
       setText(txt);
-
-      await supabase.from('privacy_policies').insert([
-        { company_name: fileName, policy_text: text, summary, impact, userimpact: userImpact, safety_score: safetyScore }
-      ]);
     } catch (err) {
       console.error("AI Analysis Error:", err);
       setError('Failed to analyze policy. Try again.');
