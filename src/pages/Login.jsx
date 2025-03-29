@@ -138,7 +138,7 @@ const Login = () => {
         </div>
         
         <div className="oauth-buttons">
-          <motion.button 
+{/*           <motion.button 
             className="google-button"
             onClick={() => handleOAuthLogin('google')}
             disabled={loading}
@@ -146,7 +146,7 @@ const Login = () => {
             whileTap={{ scale: 0.97 }}
           >
             <FaGoogle /> Sign in with Google
-          </motion.button>
+          </motion.button> */}
           
           <motion.button 
             className="github-button"
