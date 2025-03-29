@@ -231,3 +231,10 @@
   margin: 1rem auto;
   max-width: 400px;
 } 
+.cta-section h2{
+  color: #ffffff;
+}
+
+.cta-section p{
+      color: #3399ff;
+}
