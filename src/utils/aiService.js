@@ -20,7 +20,7 @@ export const analyzePrivacyPolicy = async (policyText) => {
       1. Summarize its key points in less than 100 words.
       2. Explain its impact on user data privacy and security.
       3. What does this policy mean for the user in terms of data privacy and security?
-      4. Assign a safety score from 1 to 100 (higher is safer).
+      4. Assign a safety score (based on based on the company's actions to protect your data, transparency, and other related data security matters. and related to the insights) from 1 to 100 (higher is safer)( less than 30 means bad, between 30 and 60 means moderate, between 60 and 85 means good above 85 means excellent).
 
       Return the results in this format:
       **Summary:** [summary]
