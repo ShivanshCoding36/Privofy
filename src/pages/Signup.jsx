@@ -191,12 +191,12 @@ const Signup = () => {
         </div>
 
         <div className="social-auth-buttons">
-          <button 
+{/*           <button 
             onClick={() => handleSocialLogin('google')}
             className="social-auth-btn google"
           >
             <FaGoogle /> Sign up with Google
-          </button>
+          </button> */}
           <button 
             onClick={() => handleSocialLogin('github')}
             className="social-auth-btn github"
