@@ -44,7 +44,7 @@ const PrivacyPolicy = () => {
       <h2>6. Your Rights</h2>
       <p>
         You have the right to access, modify, or delete your personal information. Contact us at 
-        <a href="mailto:support@privofy.com">support@privofy.com</a> for any privacy-related requests.
+        <a href="mailto:shivanshmathur221@gmail.com">shivanshmathur221@gmail.com</a> for any privacy-related requests.
       </p>
 
       <h2>7. Changes to This Privacy Policy</h2>
