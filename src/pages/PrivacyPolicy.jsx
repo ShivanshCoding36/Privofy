@@ -37,14 +37,14 @@ const PrivacyPolicy = () => {
 
       <h2>5. Third-Party Sharing</h2>
       <p>
-        We do not sell your personal data. However, we may share information with service providers, 
-        analytics tools, or as required by law.
+        We do not sell your data. However, we may share information with service providers, 
+        use analytics tools, or do so as required by law.
       </p>
 
       <h2>6. Your Rights</h2>
       <p>
-        You have the right to access, modify, or delete your personal information. Contact us at 
-        <a href="mailto:shivanshmathur221@gmail.com">shivanshmathur221@gmail.com</a> for any privacy-related requests.
+        You can access, modify, or delete your personal information. Contact us at 
+        <a href="mailto:shivanshmathur221@gmail.com"> shivanshmathur221@gmail.com</a> for any privacy-related requests.
       </p>
 
       <h2>7. Changes to This Privacy Policy</h2>
