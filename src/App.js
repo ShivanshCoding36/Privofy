@@ -15,6 +15,7 @@ import Terms from './pages/Terms';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   useEffect(() => {
@@ -52,6 +53,7 @@ function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route 
               path="/dashboard" 
               element={
