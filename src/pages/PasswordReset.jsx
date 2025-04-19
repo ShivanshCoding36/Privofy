@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { supabase } from "../supabaseClient"; // Import your Supabase client
+import { supabase } from '../utils/supabaseClient'; // Import your Supabase client
 import "./ResetPassword.css"; // Import CSS for styling
 
 const ResetPassword = () => {
