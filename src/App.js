@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { supabase } from './utils/supabaseClient';
+import { supabase } from './utils/supabaseClient.js';
 import { initGA, identifyUser } from './utils/analytics';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
