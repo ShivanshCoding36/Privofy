@@ -15,7 +15,7 @@ import Terms from './pages/Terms';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import ResetPassword from "./pages/ResetPassword";
+import ResetPassword from "./pages/PasswordReset";
 
 function App() {
   useEffect(() => {
