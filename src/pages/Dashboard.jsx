@@ -86,6 +86,7 @@ const Dashboard = () => {
 
   const handleTranslate = async () => {
     if (!getText) return;
+    setError(null);
     setLoading(true);
     try {
       const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${language}&dt=t&q=${encodeURIComponent(getText)}`);
@@ -155,6 +156,7 @@ const Dashboard = () => {
 
   const handleSearchPolicy = async () => {
     setLoading(true);
+    setError(null);
     try {
       let { data, error } = await supabase
         .from('privacy_policies')
@@ -258,3 +260,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
