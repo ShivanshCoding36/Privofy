@@ -4,6 +4,7 @@ import { supabase } from '../utils/supabaseClient';
 import { analyzePrivacyPolicy } from '../utils/aiService';
 import DetailsCard from '../components/AirQualityCard';
 import './Dashboard.css';
+import axios from 'axios';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -15,7 +16,7 @@ const Dashboard = () => {
   const [fileName, setFileName] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState('en-IN');
   const [translatedSummary, setTranslatedSummary] = useState('You have to translate the Summary first.');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -26,29 +27,132 @@ const Dashboard = () => {
   const [speed, setSpeed] = useState(1);
   const [resumePosition, setResumePosition] = useState(0);
   const speechRef = useRef(null);
-  const voicesRef = useRef([]);
+
+  // Sarvam TTS constants and refs
+  const SARVAM_TTS_ENDPOINT = 'https://api.sarvam.ai/text-to-speech';
+  const SARVAM_TRANSLATE_ENDPOINT = 'https://api.sarvam.ai/translate';
+  const chunkAudioRefs = useRef([]);
+  const currentChunkIndexRef = useRef(0);
+  const currentAudioRef = useRef(null);
+  const [pausedTime, setPausedTime] = useState(0);
+  const [isDecodingAudio, setIsDecodingAudio] = useState(false);
+
+  function splitText(text, maxChars = 300) {
+    const sentences = text.match(/[^.!?]+[.!?]*/g) || [];
+    const chunks = [];
+    let current = '';
+
+    for (let sentence of sentences) {
+      if ((current + sentence).length <= maxChars) {
+        current += sentence;
+      } else {
+        if (current) chunks.push(current);
+        current = sentence;
+      }
+    }
+    if (current) chunks.push(current);
+    return chunks;
+  }
+
+  const playMessageAudio = async (text, resume = false) => {
+    setIsDecodingAudio(true);
+    setIsSpeaking(true);
+
+    if (!resume) {
+      chunkAudioRefs.current = [];
+      currentChunkIndexRef.current = 0;
+    }
+
+    if (chunkAudioRefs.current.length === 0) {
+      const chunks = splitText(text, 300);
+
+      for (const chunk of chunks) {
+        const payload = {
+          text: chunk,
+          target_language_code: language,
+          speaker: "hitesh",
+          pitch: 0.1,
+          pace: speed,
+          loudness: 0.9,
+          speech_sample_rate: 22050,
+          enable_preprocessing: true,
+          model: "bulbul:v2"
+        };
+
+        const response = await axios.post(SARVAM_TTS_ENDPOINT, payload, {
+          headers: {
+            'api-subscription-key': import.meta.env.VITE_SARVAM_API,
+            'Content-Type': 'application/json',
+          }
+        });
+
+        const base64Audio = response.data.audios?.[0];
+        if (!base64Audio) continue;
+
+        const byteArray = Uint8Array.from(atob(base64Audio), c => c.charCodeAt(0));
+        const audioBlob = new Blob([byteArray], { type: 'audio/wav' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+
+        chunkAudioRefs.current.push(audio);
+      }
+    }
+
+    const playChunks = (index) => {
+      const chunks = chunkAudioRefs.current;
+      if (!chunks || index >= chunks.length) {
+        setIsSpeaking(false);
+        setIsPaused(false);
+        setResumePosition(0);
+        currentAudioRef.current = null;
+        return;
+      }
+
+      const audio = chunks[index];
+      currentAudioRef.current = audio;
+
+      audio.onended = () => {
+        currentChunkIndexRef.current = index + 1;
+        playChunks(index + 1);
+      };
+
+      audio.onerror = () => {
+        console.error("Audio playback error in chunk", index);
+        playChunks(index + 1);
+      };
+
+      audio.play();
+    };
+
+    playChunks(currentChunkIndexRef.current);
+    setIsDecodingAudio(false);
+  };
+
+  const togglePlayPause = (text) => {
+    if (isSpeaking && !isPaused) {
+      if (currentAudioRef.current) {
+        currentAudioRef.current.pause();
+        setPausedTime(currentAudioRef.current.currentTime);
+      }
+      setIsPaused(true);
+    } else if (isPaused) {
+      if (currentAudioRef.current) {
+        currentAudioRef.current.currentTime = pausedTime;
+        currentAudioRef.current.play();
+      }
+      setIsPaused(false);
+    } else {
+      setPausedTime(0);
+      playMessageAudio(text, false);
+    }
+  };
+
   useEffect(() => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
     };
     getUser();
-  
-    // Load available voices for speech synthesis
-    const loadVoices = () => {
-      voicesRef.current = window.speechSynthesis.getVoices();
-    };
-  
-    loadVoices();
-    if (window.speechSynthesis.onvoiceschanged !== undefined) {
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-    }
-  
-    // Reset spoken part when page reloads
-    const utterance = new SpeechSynthesisUtterance(' ');
-    setResumePosition(0);
-    setIsSpeaking(false);
-    setIsPaused(false);
   }, []);
   
   const handleFileUpload = (e) => {
@@ -89,9 +193,21 @@ const Dashboard = () => {
     setError(null);
     setLoading(true);
     try {
-      const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${language}&dt=t&q=${encodeURIComponent(getText)}`);
-      const data = await response.json();
-      setTranslatedSummary(data[0].map(item => item[0]).join(' '));
+      const payload = {
+        input: getText,
+        source_language: "en-IN",
+        target_language: language
+      };
+
+      const response = await axios.post(SARVAM_TRANSLATE_ENDPOINT, payload, {
+        headers: {
+          'api-subscription-key': import.meta.env.VITE_SARVAM_API,
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const translated = response.data.output;
+      setTranslatedSummary(translated);
     } catch (error) {
       console.error("Translation Error:", error);
       setError("Translation failed. Try again.");
@@ -105,51 +221,9 @@ const Dashboard = () => {
       console.error("No text available for speech.");
       return;
     }
-  
-    // **Handle Pause & Resume**
-    if (isSpeaking && !isPaused) {
-      window.speechSynthesis.pause();
-      setIsPaused(true);
-      return;
-    } else if (isPaused) {
-      window.speechSynthesis.resume();
-      setIsPaused(false);
-      return;
-    }
-  
-    // **Stop any previous speech before starting new one**
-    window.speechSynthesis.cancel();
-    setResumePosition(0);
-    setIsSpeaking(false);
-    setIsPaused(false);
-  
-    // Get available voices and match with the selected language
-    const availableVoices = voicesRef.current;
-    let selectedVoice = availableVoices.find(voice => voice.lang.startsWith(language)) || availableVoices.find(voice => voice.lang.startsWith("en"));
-    
-    if (!selectedVoice) {
-      console.error("No suitable voice found for the selected language.");
-      return;
-    }
-  
-    // Start new speech
-    const utterance = new SpeechSynthesisUtterance(textToRead);
-    utterance.rate = speed;
-    utterance.voice = selectedVoice;
-    utterance.lang = selectedVoice.lang;
-  
-    utterance.onend = () => {
-      setIsSpeaking(false);
-      setIsPaused(false);
-      setResumePosition(0);
-    };
-  
-    speechRef.current = utterance;
-    window.speechSynthesis.speak(utterance);
-    setIsSpeaking(true);
+    togglePlayPause(textToRead);
   };
   
-
   const handleSpeedChange = (e) => {
     setSpeed(parseFloat(e.target.value));
   };
@@ -232,12 +306,22 @@ const Dashboard = () => {
             <p><strong>Impact:</strong> {aiImpact}</p>
             <p><strong>Takeaways:</strong> {aiUser}</p>
             <p><strong>Summary:</strong> {aiSummary}</p>
+            
+            {/* Language Dropdown */}
             <select className="language-select" onChange={(e) => setLanguage(e.target.value)} value={language}>
-              <option value="en">English</option>
-              {/* <option value="hi">Hindi</option> */}
-              <option value="es">Spanish</option>
-              <option value="fr">French</option>
+              <option value="en-IN">English</option>
+              <option value="hi-IN">Hindi</option>
+              <option value="bn-IN">Bengali</option>
+              <option value="gu-IN">Gujarati</option>
+              <option value="kn-IN">Kannada</option>
+              <option value="ml-IN">Malayalam</option>
+              <option value="mr-IN">Marathi</option>
+              <option value="od-IN">Odia</option>
+              <option value="pa-IN">Punjabi</option>
+              <option value="ta-IN">Tamil</option>
+              <option value="te-IN">Telugu</option>
             </select>
+
             <motion.button className="translate-button" onClick={handleTranslate}>Translate</motion.button>
             <div className="audio-player">
               <button className="play-pause-button" onClick={handleTextToSpeech}>
@@ -260,4 +344,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
