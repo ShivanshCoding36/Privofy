@@ -81,7 +81,7 @@ const Dashboard = () => {
 
         const response = await axios.post(SARVAM_TTS_ENDPOINT, payload, {
           headers: {
-            'api-subscription-key': import.meta.env.VITE_SARVAM_API,
+            'api-subscription-key': process.env.REACT_APP_SARVAM_API,
             'Content-Type': 'application/json',
           }
         });
@@ -201,7 +201,7 @@ const Dashboard = () => {
 
       const response = await axios.post(SARVAM_TRANSLATE_ENDPOINT, payload, {
         headers: {
-          'api-subscription-key': import.meta.env.VITE_SARVAM_API,
+          'api-subscription-key': process.env.REACT_APP_SARVAM_API,
           'Content-Type': 'application/json',
         }
       });
@@ -344,3 +344,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
