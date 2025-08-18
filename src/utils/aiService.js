@@ -2,7 +2,7 @@ import { supabase } from './supabaseClient';
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
 export const analyzePrivacyPolicy = async (policyText) => {
   try {
@@ -51,3 +51,4 @@ export const analyzePrivacyPolicy = async (policyText) => {
     throw error;
   }
 };
+
