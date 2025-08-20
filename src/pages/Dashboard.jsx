@@ -154,7 +154,7 @@ const Dashboard = () => {
     };
     getUser();
   }, []);
-  
+
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -201,7 +201,7 @@ const Dashboard = () => {
 
       const response = await axios.post(SARVAM_TRANSLATE_ENDPOINT, payload, {
         headers: {
-          'api-subscription-key': process.env.REACT_APP_SARVAM_API,
+          Authorization: `Bearer ${process.env.REACT_APP_SARVAM_API}`,
           'Content-Type': 'application/json',
         }
       });
@@ -209,7 +209,7 @@ const Dashboard = () => {
       const translated = response.data.output;
       setTranslatedSummary(translated);
     } catch (error) {
-      console.error("Translation Error:", error);
+      console.error("Translation Error:", error.response?.data || error.message);
       setError("Translation failed. Try again.");
     }
     setLoading(false);
@@ -223,7 +223,7 @@ const Dashboard = () => {
     }
     togglePlayPause(textToRead);
   };
-  
+
   const handleSpeedChange = (e) => {
     setSpeed(parseFloat(e.target.value));
   };
@@ -344,4 +344,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
