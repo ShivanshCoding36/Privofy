@@ -196,8 +196,8 @@ const Dashboard = () => {
     try {
       const payload = {
         input: getText,
-        source_language: "en-IN",
-        target_language: language
+        source_language_code: "en-IN",
+        target_language_code: language
       };
 
       const response = await axios.post(SARVAM_TRANSLATE_ENDPOINT, payload, {
@@ -346,5 +346,6 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
 
 
