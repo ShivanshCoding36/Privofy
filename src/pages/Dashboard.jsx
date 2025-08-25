@@ -7,6 +7,7 @@ import './Dashboard.css';
 import axios from 'axios';
 
 const Dashboard = () => {
+  console.log(process.env.REACT_APP_SARVAM_API);
   const [user, setUser] = useState(null);
   const [aiSummary, setAiSummary] = useState('');
   const [aiImpact, setImpact] = useState('');
@@ -201,9 +202,10 @@ const Dashboard = () => {
 
       const response = await axios.post(SARVAM_TRANSLATE_ENDPOINT, payload, {
         headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_SARVAM_API}`,
-          'Content-Type': 'application/json',
-        }
+  'api-subscription-key': process.env.REACT_APP_SARVAM_API,
+  'Content-Type': 'application/json',
+}
+
       });
 
       const translated = response.data.output;
@@ -344,4 +346,5 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
 
