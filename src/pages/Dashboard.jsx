@@ -221,7 +221,9 @@ const handleTranslate = async () => {
       });
 
       translatedChunks.push(response.data.output.text);
-      console.log(response.data.output.text);
+      console.log(response.data.output);
+      console.log(response.data);
+      console.log(response);
     }
 
     const fullTranslated = translatedChunks.join(" ");
@@ -374,6 +376,7 @@ const handleTranslate = async () => {
 };
 
 export default Dashboard;
+
 
 
 
