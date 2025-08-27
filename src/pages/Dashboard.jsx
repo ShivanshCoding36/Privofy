@@ -4,13 +4,10 @@ import { supabase } from '../utils/supabaseClient';
 import { analyzePrivacyPolicy } from '../utils/aiService';
 import DetailsCard from '../components/AirQualityCard';
 import './Dashboard.css';
-import { SarvamAIClient } from "sarvamai";
+import axios from "axios";
 
-// Instantiate the Sarvam AI Client outside of the component
-// to prevent it from being re-created on every render.
-const client = new SarvamAIClient({
-    apiSubscriptionKey: process.env.REACT_APP_SARVAM_API
-});
+const SARVAM_TRANSLATE_ENDPOINT = "https://api.sarvam.ai/translate";
+const SARVAM_TTS_ENDPOINT = "https://api.sarvam.ai/text-to-speech";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -30,23 +27,18 @@ const Dashboard = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [speed, setSpeed] = useState(1);
+  const [resumePosition, setResumePosition] = useState(0);
+
   const chunkAudioRefs = useRef([]);
   const currentChunkIndexRef = useRef(0);
   const currentAudioRef = useRef(null);
   const [pausedTime, setPausedTime] = useState(0);
   const [isDecodingAudio, setIsDecodingAudio] = useState(false);
 
-  /**
-   * Splits a long text into smaller chunks suitable for TTS processing.
-   * @param {string} text - The input text to split.
-   * @param {number} maxChars - The maximum number of characters per chunk.
-   * @returns {string[]} An array of text chunks.
-   */
   function splitText(text, maxChars = 300) {
     const sentences = text.match(/[^.!?]+[.!?]*/g) || [];
     const chunks = [];
     let current = '';
-
     for (let sentence of sentences) {
       if ((current + sentence).length <= maxChars) {
         current += sentence;
@@ -59,11 +51,6 @@ const Dashboard = () => {
     return chunks;
   }
 
-  /**
-   * Converts text to speech chunk by chunk and plays the audio.
-   * @param {string} text - The text to be spoken.
-   * @param {boolean} resume - Flag to indicate if playback should resume from a paused state.
-   */
   const playMessageAudio = async (text, resume = false) => {
     setIsDecodingAudio(true);
     setIsSpeaking(true);
@@ -73,25 +60,28 @@ const Dashboard = () => {
       currentChunkIndexRef.current = 0;
     }
 
-    // Generate audio only if we don't have the chunks already
     if (chunkAudioRefs.current.length === 0) {
       const chunks = splitText(text, 300);
-      console.log('Target language for TTS:', language);
       for (const chunk of chunks) {
         try {
-          const response = await client.textToSpeech.convert({
+          const response = await axios.post(SARVAM_TTS_ENDPOINT, {
             text: chunk,
             target_language_code: language,
             speaker: "hitesh",
-            pitch: 0,
+            pitch: 0.1,
             pace: speed,
-            loudness: 1,
+            loudness: 0.9,
             speech_sample_rate: 22050,
             enable_preprocessing: true,
             model: "bulbul:v2"
+          }, {
+            headers: {
+              "api-subscription-key": process.env.REACT_APP_SARVAM_API,
+              "Content-Type": "application/json"
+            }
           });
 
-          const base64Audio = response.audios?.[0]?.audio_content;
+          const base64Audio = response.data.audios?.[0];
           if (!base64Audio) continue;
 
           const byteArray = Uint8Array.from(atob(base64Audio), c => c.charCodeAt(0));
@@ -100,12 +90,8 @@ const Dashboard = () => {
           const audio = new Audio(audioUrl);
 
           chunkAudioRefs.current.push(audio);
-        } catch (ttsError) {
-          console.error("Sarvam TTS API Error:", ttsError);
-          setError("Failed to generate audio. Please try again.");
-          setIsSpeaking(false);
-          setIsDecodingAudio(false);
-          return;
+        } catch (err) {
+          console.error("TTS Error:", err);
         }
       }
     }
@@ -115,6 +101,7 @@ const Dashboard = () => {
       if (!chunks || index >= chunks.length) {
         setIsSpeaking(false);
         setIsPaused(false);
+        setResumePosition(0);
         currentAudioRef.current = null;
         return;
       }
@@ -129,7 +116,7 @@ const Dashboard = () => {
 
       audio.onerror = () => {
         console.error("Audio playback error in chunk", index);
-        playChunks(index + 1); // Skip problematic chunk
+        playChunks(index + 1);
       };
 
       audio.play();
@@ -139,10 +126,6 @@ const Dashboard = () => {
     setIsDecodingAudio(false);
   };
 
-  /**
-   * Toggles the play/pause state of the text-to-speech audio.
-   * @param {string} text - The text to be passed to the TTS engine if starting fresh.
-   */
   const togglePlayPause = (text) => {
     if (isSpeaking && !isPaused) {
       if (currentAudioRef.current) {
@@ -195,8 +178,6 @@ const Dashboard = () => {
       setAiUser(userImpact);
       const txt = `Impact: ${impact}, Takeaways: ${userImpact}, Summary: ${summary}`;
       setText(txt);
-      // Reset translation when new text is analyzed
-      setTranslatedSummary('You have to translate the Summary first.');
     } catch (err) {
       console.error("AI Analysis Error:", err);
       setError('Failed to analyze policy. Try again.');
@@ -205,61 +186,51 @@ const Dashboard = () => {
     }
   };
 
-  /**
-   * Splits text into chunks for the translation API.
-   * @param {string} text - The text to be split.
-   * @param {number} maxChars - Max characters per chunk.
-   * @returns {string[]} An array of text chunks.
-   */
- function splitForTranslate(text, maxChars = 1000) {
-  const chunks = [];
-  let start = 0;
-  while (start < text.length) {
-    chunks.push(text.slice(start, start + maxChars));
-    start += maxChars;
+  function splitForTranslate(text, maxChars = 1000) {
+    const chunks = [];
+    let start = 0;
+    while (start < text.length) {
+      chunks.push(text.slice(start, start + maxChars));
+      start += maxChars;
+    }
+    return chunks;
   }
-  return chunks;
-}
 
-/**
- * Translates the analyzed text using the Sarvam AI translation API.
- */
-const handleTranslate = async () => {
-  if (!getText) return;
-  setError(null);
-  setLoading(true);
-  // When translating, stop any ongoing speech
-  if (isSpeaking) {
-    currentAudioRef.current?.pause();
-    setIsSpeaking(false);
-    setIsPaused(false);
-  }
-  try {
-    const chunks = splitForTranslate(getText, 950);
-    let translatedChunks = [];
-
-    for (const chunk of chunks) {
-      const response = await client.text.translate({
-          input: chunk,
+  const handleTranslate = async () => {
+    if (!getText) return;
+    setError(null);
+    setLoading(true);
+    try {
+      const response = await axios.post(SARVAM_TRANSLATE_ENDPOINT, {
+          input: getText,
           source_language_code: "en-IN",
           target_language_code: language,
           mode: "formal",
-          model: "mayura:v1",
+          model: "sarvam-translate:v1",
           numerals_format: "native",
+          speaker_gender: "Male",
           enable_preprocessing: false
-      });
-      translatedChunks.push(response.output.text);
-      console.log(response);
-    }
+        }, {
+          headers: {
+            "api-subscription-key": process.env.REACT_APP_SARVAM_API,
+            "Content-Type": "application/json"
+          }
+        });
+      setTranslatedSummary(response.data.translated_text);
 
-    const fullTranslated = translatedChunks.join(" ");
-    setTranslatedSummary(fullTranslated);
-  } catch (error) {
-    console.error("Translation Error:", error);
-    setError("Translation failed. Try again.");
-  }
-  setLoading(false);
-};
+// ✅ Clear old audio when translation changes
+chunkAudioRefs.current = [];
+currentChunkIndexRef.current = 0;
+currentAudioRef.current = null;
+setIsSpeaking(false);
+setIsPaused(false);
+
+    }catch (error) {
+      console.error("Translation Error:", error.response?.data || error.message);
+      setError("Translation failed. Try again.");
+    }
+    setLoading(false);
+  };
 
   const handleTextToSpeech = () => {
     let textToRead = translatedSummary !== 'You have to translate the Summary first.' ? translatedSummary : getText;
@@ -295,8 +266,6 @@ const handleTranslate = async () => {
 
         const txt = `Impact: ${policy.impact}, Takeaways: ${policy.userimpact}, Summary: ${policy.summary}`;
         setText(txt);
-        // Reset translation when new text is loaded
-        setTranslatedSummary('You have to translate the Summary first.');
       } else {
         setError('No matching privacy policy found.');
       }
@@ -312,7 +281,7 @@ const handleTranslate = async () => {
       {loading && <div className="loading-spinner">Loading...</div>}
       {error && <div className="error-message">{error}</div>}
 
-      <motion.div 
+      <motion.div
         className="policy-upload-section"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -354,42 +323,64 @@ const handleTranslate = async () => {
             <p><strong>Impact:</strong> {aiImpact}</p>
             <p><strong>Takeaways:</strong> {aiUser}</p>
             <p><strong>Summary:</strong> {aiSummary}</p>
-            
-            <select className="language-select" onChange={(e) => setLanguage(e.target.value)} value={language}>
-              <option value="en-IN">English</option>
-              <option value="hi-IN">Hindi</option>
-              <option value="bn-IN">Bengali</option>
-              <option value="gu-IN">Gujarati</option>
-              <option value="kn-IN">Kannada</option>
-              <option value="ml-IN">Malayalam</option>
-              <option value="mr-IN">Marathi</option>
-              <option value="od-IN">Odia</option>
-              <option value="pa-IN">Punjabi</option>
-              <option value="ta-IN">Tamil</option>
-              <option value="te-IN">Telugu</option>
-            </select>
+
+            {/* Language Dropdown */}
+            <select 
+  className="language-select" 
+  onChange={(e) => setLanguage(e.target.value)} 
+  value={language}
+>
+  <option value="en-IN">English</option>
+  <option value="hi-IN">Hindi</option>
+  <option value="bn-IN">Bengali</option>
+  <option value="gu-IN">Gujarati</option>
+  <option value="kn-IN">Kannada</option>
+  <option value="ml-IN">Malayalam</option>
+  <option value="mr-IN">Marathi</option>
+  <option value="od-IN">Odia</option>
+  <option value="pa-IN">Punjabi</option>
+  <option value="ta-IN">Tamil</option>
+  <option value="te-IN">Telugu</option>
+{/* 
+  <option value="as-IN">Assamese</option>
+  <option value="brx-IN">Bodo</option>
+  <option value="doi-IN">Dogri</option>
+  <option value="kok-IN">Konkani</option>
+  <option value="ks-IN">Kashmiri</option>
+  <option value="mai-IN">Maithili</option>
+  <option value="mni-IN">Manipuri (Meiteilon)</option>
+  <option value="ne-IN">Nepali</option>
+  <option value="sa-IN">Sanskrit</option>
+  <option value="sat-IN">Santali</option>
+  <option value="sd-IN">Sindhi</option>
+  <option value="ur-IN">Urdu</option> */}
+</select>
+
 
             <motion.button className="translate-button" onClick={handleTranslate}>Translate</motion.button>
+
             <div className="audio-player">
-              <button className="play-pause-button" onClick={handleTextToSpeech}>
-                {isSpeaking ? (isPaused ? '▶️' : '⏸️') : '▶️'}
-              </button>
-             <div className="speed-control" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '15px' }}>
-                <label className="speed-label">Speed: {speed.toFixed(1)}x</label>
-                <input
-                  type="range"
-                  min="0.5"
-                  max="2"
-                  step="0.1"
-                  value={speed}
-                  onChange={handleSpeedChange}
-                  className="speed-slider"
-                />
-              </div>
-            </div>
+  <button className="play-pause-button" onClick={handleTextToSpeech}>
+    {isSpeaking ? (isPaused ? '▶️' : '⏸️') : '▶️'}
+  </button>
+
+  <div className="speed-control">
+    <span className="speed-label">Speed: {speed.toFixed(1)}x</span>
+    <input
+      type="range"
+      min="0.5"
+      max="2"
+      step="0.1"
+      value={speed}
+      onChange={handleSpeedChange}
+      className="speed-slider"
+    />
+  </div>
+</div>
+
           </>
         )}
-        <hr/>
+        <hr />
         <h3>Translated Result</h3> {translatedSummary}
       </div>
 
