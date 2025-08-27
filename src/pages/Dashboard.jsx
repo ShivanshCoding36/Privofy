@@ -189,33 +189,50 @@ const Dashboard = () => {
     }
   };
 
-  const handleTranslate = async () => {
-    if (!getText) return;
-    setError(null);
-    setLoading(true);
-    try {
+ function splitForTranslate(text, maxChars = 1000) {
+  const chunks = [];
+  let start = 0;
+  while (start < text.length) {
+    chunks.push(text.slice(start, start + maxChars));
+    start += maxChars;
+  }
+  return chunks;
+}
+
+const handleTranslate = async () => {
+  if (!getText) return;
+  setError(null);
+  setLoading(true);
+  try {
+    const chunks = splitForTranslate(getText, 1000);
+    let translatedChunks = [];
+
+    for (const chunk of chunks) {
       const payload = {
-        input: getText,
+        input: chunk,
         source_language_code: "en-IN",
         target_language_code: language
       };
 
       const response = await axios.post(SARVAM_TRANSLATE_ENDPOINT, payload, {
         headers: {
-  'api-subscription-key': process.env.REACT_APP_SARVAM_API,
-  'Content-Type': 'application/json',
-}
-
+          'api-subscription-key': process.env.REACT_APP_SARVAM_API,
+          'Content-Type': 'application/json',
+        }
       });
 
-      const translated = response.data.output;
-      setTranslatedSummary(translated);
-    } catch (error) {
-      console.error("Translation Error:", error.response?.data || error.message);
-      setError("Translation failed. Try again.");
+      translatedChunks.push(response.data.output);
     }
-    setLoading(false);
-  };
+
+    const fullTranslated = translatedChunks.join(" ");
+    setTranslatedSummary(fullTranslated);
+  } catch (error) {
+    console.error("Translation Error:", error.response?.data || error.message);
+    setError("Translation failed. Try again.");
+  }
+  setLoading(false);
+};
+
 
   const handleTextToSpeech = () => {
     let textToRead = translatedSummary !== 'You have to translate the Summary first.' ? translatedSummary : getText;
@@ -346,6 +363,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
 
 
 
