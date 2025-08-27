@@ -221,13 +221,13 @@ const handleTranslate = async () => {
       });
 
       translatedChunks.push(response.data.output.text);
-      console.log(response.data.output);
-      console.log(response.data);
-      console.log(response);
     }
 
     const fullTranslated = translatedChunks.join(" ");
     setTranslatedSummary(fullTranslated);
+
+    // Immediately convert translated text to TTS after translation
+    togglePlayPause(fullTranslated);
   } catch (error) {
     console.error("Translation Error:", error.response?.data || error.message);
     setError("Translation failed. Try again.");
@@ -348,19 +348,18 @@ const handleTranslate = async () => {
               <button className="play-pause-button" onClick={handleTextToSpeech}>
                 {isSpeaking ? (isPaused ? '▶️' : '⏸️') : '▶️'}
               </button>
-             <div className="speed-control">
-  <label className="speed-label">Speed: {speed.toFixed(1)}x</label>
-  <input
-    type="range"
-    min="0.5"
-    max="2"
-    step="0.1"
-    value={speed}
-    onChange={handleSpeedChange}
-    className="speed-slider"
-  />
-</div>
-
+              <div className="speed-control" style={{ display: 'inline-block', width: 'auto' }}>
+                <label className="speed-label">Speed: {speed.toFixed(1)}x</label>
+                <input
+                  type="range"
+                  min="0.5"
+                  max="2"
+                  step="0.1"
+                  value={speed}
+                  onChange={handleSpeedChange}
+                  className="speed-slider"
+                />
+              </div>
             </div>
           </>
         )}
@@ -376,10 +375,3 @@ const handleTranslate = async () => {
 };
 
 export default Dashboard;
-
-
-
-
-
-
-
