@@ -65,7 +65,7 @@ const Dashboard = () => {
 
     if (chunkAudioRefs.current.length === 0) {
       const chunks = splitText(text, 300);
-
+      console.log(language);
       for (const chunk of chunks) {
         const payload = {
           text: chunk,
@@ -376,6 +376,7 @@ const handleTranslate = async () => {
 };
 
 export default Dashboard;
+
 
 
 
