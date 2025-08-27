@@ -7,7 +7,6 @@ import './Dashboard.css';
 import axios from 'axios';
 
 const Dashboard = () => {
-  console.log(process.env.REACT_APP_SARVAM_API);
   const [user, setUser] = useState(null);
   const [aiSummary, setAiSummary] = useState('');
   const [aiImpact, setImpact] = useState('');
@@ -204,7 +203,7 @@ const handleTranslate = async () => {
   setError(null);
   setLoading(true);
   try {
-    const chunks = splitForTranslate(getText, 1000);
+    const chunks = splitForTranslate(getText, 950);
     let translatedChunks = [];
 
     for (const chunk of chunks) {
@@ -221,7 +220,8 @@ const handleTranslate = async () => {
         }
       });
 
-      translatedChunks.push(response.data.output);
+      translatedChunks.push(response.data.output.text);
+      console.log(response.data.output.text);
     }
 
     const fullTranslated = translatedChunks.join(" ");
@@ -346,8 +346,19 @@ const handleTranslate = async () => {
               <button className="play-pause-button" onClick={handleTextToSpeech}>
                 {isSpeaking ? (isPaused ? '▶️' : '⏸️') : '▶️'}
               </button>
-              <label>Speed: {speed}</label>
-              <input type="range" min="0.5" max="2" step="0.1" value={speed} onChange={handleSpeedChange} className='speed-button' />
+             <div className="speed-control">
+  <label className="speed-label">Speed: {speed.toFixed(1)}x</label>
+  <input
+    type="range"
+    min="0.5"
+    max="2"
+    step="0.1"
+    value={speed}
+    onChange={handleSpeedChange}
+    className="speed-slider"
+  />
+</div>
+
             </div>
           </>
         )}
@@ -363,6 +374,7 @@ const handleTranslate = async () => {
 };
 
 export default Dashboard;
+
 
 
 
