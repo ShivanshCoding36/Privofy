@@ -24,6 +24,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
+  margin-left: 114px;
 }
 
 .metric-item {
@@ -142,3 +143,4 @@
   color: #3399ff; /* Customize the color */
   margin-right: 0.5rem;
 }
+
