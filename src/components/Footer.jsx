@@ -23,13 +23,13 @@ const Footer = () => {
         <div className="footer-section">
           <h3>Founder</h3>
           <div className="social-icons">
-            <a href="https://www.linkedin.com/in/shivanshmathur5" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/in/shivanshmathur9" target="_blank" rel="noopener noreferrer">
               <FaLinkedin />
             </a>
             <a href="mailto:shivanshmathur221@gmail.com">
               <FaEnvelope />
             </a>
-            <a href="https://www.youtube.com/@shivanshmathur5" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.youtube.com/@shivanshmathur9" target="_blank" rel="noopener noreferrer">
               <FaYoutube />
             </a>
           </div>
@@ -54,5 +54,6 @@ const Footer = () => {
     </footer>
   );
 };
+
 
 export default Footer; 
