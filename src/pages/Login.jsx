@@ -84,7 +84,7 @@ const Login = () => {
 >
 
         <h1>Welcome Back</h1>
-        <p>Sign in to access your air quality dashboard</p>
+        <p>Log in to access Privofy</p>
         
         {error && <div className="error-message">{error}</div>}
         
@@ -168,3 +168,4 @@ const Login = () => {
 };
 
 export default Login; 
+
