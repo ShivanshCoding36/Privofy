@@ -108,7 +108,7 @@ const Signup = () => {
         transition={{ duration: 0.5 }}
       >
         <h2>Create an Account</h2>
-        <p className="auth-subtitle">Join AeroAware to access air quality insights</p>
+        <p className="auth-subtitle">Join Privofy to get insights on <b>privacy policies</b></p>
         
         {error && <div className="auth-error">{error}</div>}
         <form onSubmit={handleSubmit} className="auth-form">
@@ -218,3 +218,4 @@ const Signup = () => {
 };
 
 export default Signup;
+
