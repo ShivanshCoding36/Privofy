@@ -503,4 +503,45 @@
   flex: 1;
 }
 
+.file-url-upload-wrapper {
+  display: grid;
+  grid-template-columns: 2fr auto 1fr; /* URL input big, Fetch small, Upload medium */
+  gap: 12px;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.url-input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+  width: 100%;
+  transition: border 0.3s ease;
+}
+
+.url-fetch-button {
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #34c759 0%, #2aa44f 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #3399ff 0%, #5d7df9 100%);
+  color: white;
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+}
+
 
