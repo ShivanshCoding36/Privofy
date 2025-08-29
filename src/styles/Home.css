@@ -65,6 +65,7 @@
 .primary-button {
   background-color: #4CAF50;
   color: white;
+  text-decoration: none;
 }
 
 
@@ -238,3 +239,4 @@
 .cta-section p{
       color: #3399ff;
 }
+
