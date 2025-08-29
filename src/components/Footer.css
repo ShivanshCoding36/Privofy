@@ -42,6 +42,7 @@ list-style-type: none;
 
 .lis a:hover{
   color: #3399ff;
-  
+  text-decoration: none;
 }
+
 
