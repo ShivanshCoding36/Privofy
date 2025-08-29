@@ -183,6 +183,7 @@
   font-weight: 600;
   margin-top: 2rem;
   transition: transform 0.2s;
+  text-decoration: none;
 }
 
 .cta-button:hover {
@@ -239,4 +240,5 @@
 .cta-section p{
       color: #3399ff;
 }
+
 
