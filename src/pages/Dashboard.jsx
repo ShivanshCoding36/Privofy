@@ -28,13 +28,43 @@ const Dashboard = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [resumePosition, setResumePosition] = useState(0);
-
+  const [policyUrl, setPolicyUrl] = useState("");
   const chunkAudioRefs = useRef([]);
   const currentChunkIndexRef = useRef(0);
   const currentAudioRef = useRef(null);
   const [pausedTime, setPausedTime] = useState(0);
   const [isDecodingAudio, setIsDecodingAudio] = useState(false);
 
+  const handleUrlFetch = async () => {
+  if (!policyUrl.trim()) {
+    setError("Please enter a valid URL.");
+    return;
+  }
+  setLoading(true);
+  setError(null);
+  try {
+    const response = await axios.get(policyUrl);
+    const text = response.data;
+
+    const { summary, safetyScore, impact, userImpact } =
+      await analyzePrivacyPolicy(text);
+
+    setScore(safetyScore);
+    setAiSummary(summary);
+    setImpact(impact);
+    setAiUser(userImpact);
+
+    const txt = `Impact: ${impact}, Takeaways: ${userImpact}, Summary: ${summary}`;
+    setText(txt);
+    setFileName(`Fetched from URL: ${policyUrl}`);
+  } catch (err) {
+    console.error("URL Fetch Error:", err);
+    setError("Failed to fetch policy from URL. Try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+  
   function splitText(text, maxChars = 300) {
     const sentences = text.match(/[^.!?]+[.!?]*/g) || [];
     const chunks = [];
@@ -304,12 +334,50 @@ setIsPaused(false);
 
         {fileName && <motion.p className="file-name">{fileName}</motion.p>}
 
-        <motion.div className="file-upload-wrapper">
-          <input type="file" accept=".txt,.pdf,.docx" ref={fileInputRef} onChange={handleFileUpload} style={{ display: 'none' }} />
-          <motion.label className="file-upload-label" onClick={() => fileInputRef.current.click()}>
-            Choose File
-          </motion.label>
-        </motion.div>
+        <motion.div
+  className="file-url-upload-wrapper"
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6 }}
+>
+  {/* URL Input */}
+  <motion.input
+    type="text"
+    className="url-input"
+    placeholder="Enter privacy policy URL..."
+    value={policyUrl}
+    onChange={(e) => setPolicyUrl(e.target.value)}
+    whileFocus={{ scale: 1.02, borderColor: "#3399ff" }}
+  />
+
+  {/* Fetch Button */}
+  <motion.button
+    className="url-fetch-button"
+    onClick={handleUrlFetch}
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+  >
+    Fetch
+  </motion.button>
+
+  {/* File Upload */}
+  <input
+    type="file"
+    accept=".txt,.pdf,.docx"
+    ref={fileInputRef}
+    onChange={handleFileUpload}
+    style={{ display: "none" }}
+  />
+  <motion.label
+    className="file-upload-label"
+    onClick={() => fileInputRef.current.click()}
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+  >
+    Choose File
+  </motion.label>
+</motion.div>
+
 
         <motion.button className="analyze-button" onClick={handleAnalyzePolicy}>
           Analyze Policy
@@ -392,3 +460,4 @@ setIsPaused(false);
 };
 
 export default Dashboard;
+
