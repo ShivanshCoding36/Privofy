@@ -14,7 +14,7 @@ const Footer = () => {
         
         <div className="footer-section">
           <h3>Legal</h3>
-          <ul>
+          <ul className="lis">
             <li><Link to="/privacy-policy">Privacy Policy</Link></li>
             <li><Link to="/terms">Terms & Conditions</Link></li>
           </ul>
@@ -57,3 +57,4 @@ const Footer = () => {
 
 
 export default Footer; 
+
