@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../utils/supabaseClient';
-import { FaGoogle, FaGithub } from 'react-icons/fa';
+import {FaEye, FaEyeSlash, FaGoogle, FaGithub } from 'react-icons/fa';
 import './Login.css';
 
 const Login = () => {
@@ -109,6 +109,13 @@ const Login = () => {
       onChange={(e) => setPassword(e.target.value)}
       required
     />
+    <button 
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
   </div>
   
   {/* Log In button moved up */}
@@ -168,4 +175,5 @@ const Login = () => {
 };
 
 export default Login; 
+
 
