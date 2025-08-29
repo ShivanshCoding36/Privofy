@@ -29,3 +29,17 @@
   font-size: 0.9rem;
   color: #666;
 }
+
+.lis{
+list-style-type: none;
+}
+
+.lis a{
+  text-decoration: none;
+  color: #333;
+  
+}
+
+.lis a:hover{
+  color: #3399ff;
+}
