@@ -300,6 +300,8 @@
   border-radius: 8px;
   font-size: 1rem;
   outline: none;
+  margin-bottom: 0;
+
 }
 
 .search-button {
@@ -518,6 +520,8 @@
   font-size: 1rem;
   width: 100%;
   transition: border 0.3s ease;
+      margin-top: 0;
+    margin-bottom: 0;
 }
 
 .url-fetch-button {
@@ -542,6 +546,9 @@
   font-weight: 500;
   cursor: pointer;
   text-align: center;
+      margin-top: 0;
+    margin-bottom: 0;
 }
+
 
 
