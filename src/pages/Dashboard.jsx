@@ -44,7 +44,7 @@ const Dashboard = () => {
   setError(null);
   try {
     const response = await fetch(
-  `/.netlify/functions/fetchPolicy?url=${encodeURIComponent(urlInput)}`
+  `/.netlify/functions/fetchPolicy?url=${encodeURIComponent(policyUrl)}`
 );
 const text = await response.text();
     console.log(text)
