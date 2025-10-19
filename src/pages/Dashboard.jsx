@@ -43,8 +43,11 @@ const Dashboard = () => {
   setLoading(true);
   setError(null);
   try {
-    const response = await axios.get(policyUrl);
-    const text = response.data;
+    const response = await fetch(
+  `/.netlify/functions/fetchPolicy?url=${encodeURIComponent(urlInput)}`
+);
+const text = await response.text();
+    console.log(text)
 
     const { summary, safetyScore, impact, userImpact } =
       await analyzePrivacyPolicy(text);
@@ -460,4 +463,5 @@ setIsPaused(false);
 };
 
 export default Dashboard;
+
 
