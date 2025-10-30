@@ -39,7 +39,7 @@ const Signup = () => {
       // Handle successful social login
       if (data) {
         // Add initial credits for new user
-        await addInitialCredits(data.user.id);
+        // await addInitialCredits(data.user.id);
         navigate('/dashboard');
       }
     } catch (error) {
@@ -47,20 +47,20 @@ const Signup = () => {
     }
   };
 
-  const addInitialCredits = async (userId) => {
-    try {
-      const { error } = await supabase
-        .from('profiles')
-        .upsert({
-          user_id: userId,
-          credits: 10,
-          created_at: new Date()
-        });
-      if (error) throw error;
-    } catch (error) {
-      console.error('Error adding initial credits:', error);
-    }
-  };
+  // const addInitialCredits = async (userId) => {
+  //   try {
+  //     const { error } = await supabase
+  //       .from('profiles')
+  //       .upsert({
+  //         user_id: userId,
+  //         credits: 10,
+  //         created_at: new Date()
+  //       });
+  //     if (error) throw error;
+  //   } catch (error) {
+  //     console.error('Error adding initial credits:', error);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,7 +87,7 @@ const Signup = () => {
       if (error) throw error;
       
       // Add initial credits
-      await addInitialCredits(data.user.id);
+      // await addInitialCredits(data.user.id);
       
       navigate('/login', { 
         state: { message: 'Account created! Please check your email to verify your account.' } 
@@ -218,4 +218,5 @@ const Signup = () => {
 };
 
 export default Signup;
+
 
