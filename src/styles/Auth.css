@@ -1,216 +1,206 @@
 .auth-container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 .auth-form-container {
-  background-color: white;
-  padding: 2.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  width: 100%;
-  max-width: 450px;
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 450px;
 }
 
 .auth-form-container h2 {
-  margin-bottom: 0.5rem;
-  font-size: 2rem;
-  color: #333;
-  text-align: center;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
 }
 
 .auth-subtitle {
-  text-align: center;
-  color: #666;
-  margin-bottom: 2rem;
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
 }
 
 .auth-error {
-  background-color: #ffebee;
-  color: #f44336;
-  padding: 0.75rem;
-  border-radius: 5px;
-  margin-bottom: 1.5rem;
-  text-align: center;
+  background-color: #ffebee;
+  color: #f44336;
+  padding: 0.75rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #555;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #555;
 }
 
 .form-group input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-  /* Add box-sizing to ensure padding doesn't break width */
-  box-sizing: border-box; 
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  box-sizing: border-box; /* Ensures padding doesn't break width */
 }
 
 .form-group input:focus {
-  border-color: #3399ff;
-  outline: none;
+  border-color: #3399ff;
+  outline: none;
 }
 
 .auth-button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #3399ff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 1rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #3399ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 1rem;
 }
 
 .auth-button:hover {
-  background-color: #2277cc;
+  background-color: #2277cc;
 }
 
 .auth-button:disabled {
-  background-color: #a0cfff;
-  cursor: not-allowed;
+  background-color: #a0cfff;
+  cursor: not-allowed;
 }
 
 .auth-links {
-  margin-top: 1.5rem;
-  text-align: center;
+  margin-top: 1.5rem;
+  text-align: center;
 }
 
 .auth-links a {
-  color: #3399ff;
-  text-decoration: none;
-  font-weight: 500;
+  color: #3399ff;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .auth-links a:hover {
-  text-decoration: underline;
+  text-decoration: underline;
 }
 
 .auth-terms {
-  margin-top: 2rem;
-  font-size: 0.85rem;
-  color: #777;
-  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: #777;
+  text-align: center;
 }
 
 .auth-terms a {
-  color: #3399ff;
-  text-decoration: none;
+  color: #3399ff;
+  text-decoration: none;
 }
 
 .auth-terms a:hover {
-  text-decoration: underline;
+  text-decoration: underline;
 }
 
 .password-input {
-  position: relative;
+  position: relative;
 }
 
 .password-field {
-  position: relative;
-  display: flex;
-  align-items: center;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-/* --- FIX 2: Added this rule --- */
-/* This adds padding to the right of the password inputs */
-/* so text doesn't type underneath the icon */
+/* Adds padding so password text doesn’t overlap icon */
 .password-field input {
-  padding-right: 2.75rem; /* 0.75rem default + 2rem for icon */
+  padding-right: 2.75rem;
 }
-/* ------------------------------- */
 
-
-/* --- FIX 1: Updated this rule --- */
+/* Password toggle icon */
 .password-toggle {
-  position: absolute;
-  right: 10px;
-  /* Added these two lines for perfect vertical centering */
+  position: absolute;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #666;
-  padding: 5px;
-  /* Removed these conflicting lines */
-  /* margin-left: 95%; */
-  /* margin-bottom: 2%; */
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
 }
-/* -------------------------------- */
 
 .social-auth-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .social-auth-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  background: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: 500;
 }
 
 .social-auth-btn.google {
-  color: #DB4437;
+  color: #db4437;
 }
 
 .social-auth-btn.github {
-  color: #333;
+  color: #333;
 }
 
 .auth-divider {
-  text-align: center;
-  margin: 1.5rem 0;
-  position: relative;
+  text-align: center;
+  margin: 1.5rem 0;
+  position: relative;
 }
 
 .auth-divider::before,
 .auth-divider::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 45%;
-  height: 1px;
-  background-color: #ddd;
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 45%;
+  height: 1px;
+  background-color: #ddd;
 }
 
 .auth-divider::before {
-  left: 0;
+  left: 0;
 }
 
 .auth-divider::after {
-  right: 0;
+  right: 0;
 }
 
 .auth-divider span {
-  background-color: white;
-  padding: 0 10px;
-  color: #666;
+  background-color: white;
+  padding: 0 10px;
+  color: #666;
 }
