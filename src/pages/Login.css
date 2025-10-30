@@ -1,5 +1,4 @@
-.login-container {
-  display: flex;
+.login-container {display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh; /* Ensures full screen height */
@@ -199,3 +198,4 @@
   /* Removed conflicting margin-left and margin-bottom */
 }
 /* --- END OF CSS FIX --- */
+
