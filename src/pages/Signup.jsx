@@ -88,10 +88,8 @@ const Signup = () => {
       
       // Add initial credits
       // await addInitialCredits(data.user.id);
-      
-      navigate('/login', { 
-        state: { message: 'Account created! Please check your email to verify your account.' } 
-      });
+      alert('Signup successful! You can now log in.');
+      navigate('/login');
     } catch (error) {
       setError(error.message);
     } finally {
@@ -218,5 +216,6 @@ const Signup = () => {
 };
 
 export default Signup;
+
 
 
