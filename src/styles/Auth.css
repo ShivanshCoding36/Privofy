@@ -136,8 +136,8 @@
 /* Password toggle icon */
 .password-toggle {
   position: absolute;
-  left: 10rem;
-  bottom: 18px;
+  right: -166px;
+  bottom: -3px;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -204,4 +204,5 @@
   padding: 0 10px;
   color: #666;
 }
+
 
