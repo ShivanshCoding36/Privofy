@@ -42,10 +42,13 @@ const Dashboard = () => {
   }
   setLoading(true);
   setError(null);
-  try {
-    const response = await fetch(
-  `/.netlify/functions/fetchPolicy?URL=${encodeURIComponent(policyUrl)}`
-);
+  const response = await fetch("https://webscraper-sodl.onrender.com/api/GetData", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ URL: policyUrl }),
+  });
 const text = await response.text();
     console.log(text)
 
@@ -463,6 +466,7 @@ setIsPaused(false);
 };
 
 export default Dashboard;
+
 
 
 
