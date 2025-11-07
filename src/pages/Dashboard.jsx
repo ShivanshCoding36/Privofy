@@ -44,7 +44,7 @@ const Dashboard = () => {
   setError(null);
   try {
     const response = await fetch(
-  `/.netlify/functions/fetchPolicy?url=${encodeURIComponent(policyUrl)}`
+  `/.netlify/functions/fetchPolicy?URL=${encodeURIComponent(policyUrl)}`
 );
 const text = await response.text();
     console.log(text)
@@ -463,5 +463,6 @@ setIsPaused(false);
 };
 
 export default Dashboard;
+
 
 
