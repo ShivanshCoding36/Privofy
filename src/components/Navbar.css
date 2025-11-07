@@ -6,6 +6,7 @@
   width: 100%;
   top: 0;
   z-index: 1000;
+  font-size: large;
 }
 
 .navbar.scrolled {
@@ -45,5 +46,6 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
 
 
