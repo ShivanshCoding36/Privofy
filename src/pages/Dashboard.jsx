@@ -487,8 +487,3 @@ setIsPaused(false);
 };
 
 export default Dashboard;
-
-
-
-
-
