@@ -168,14 +168,7 @@
   z-index: 1000;
 }
 
-.error-message {
-  background: #ffebee;
-  color: #c62828;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  font-weight: 500;
-} 
+
 .policy-upload-section {
   background: white;
   padding: 1.5rem;
@@ -550,5 +543,31 @@
     margin-bottom: 0;
 }
 
+
+.error-message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.error-close-btn {
+  background: transparent;
+  background-color: #910707;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: 12px;
+}
+
+.error-close-btn:hover {
+  opacity: 0.8;
+}
 
 
