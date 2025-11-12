@@ -40,17 +40,25 @@ const Dashboard = () => {
     setError("Please enter a valid URL.");
     return;
   }
+
   setLoading(true);
   setError(null);
-  const response = await fetch("https://webscraper-sodl.onrender.com/api/GetData", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ URL: policyUrl }),
-  });
-const text = await response.text();
-    console.log(text)
+
+  try {
+    const response = await fetch("https://webscraper-sodl.onrender.com/api/GetData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ URL: policyUrl }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch text from URL.");
+    }
+
+    const text = await response.text();
+    console.log("Fetched text:", text);
 
     const { summary, safetyScore, impact, userImpact } =
       await analyzePrivacyPolicy(text);
@@ -63,6 +71,7 @@ const text = await response.text();
     const txt = `Impact: ${impact}, Takeaways: ${userImpact}, Summary: ${summary}`;
     setText(txt);
     setFileName(`Fetched from URL: ${policyUrl}`);
+
   } catch (err) {
     console.error("URL Fetch Error:", err);
     setError("Failed to fetch policy from URL. Try again.");
@@ -70,6 +79,8 @@ const text = await response.text();
     setLoading(false);
   }
 };
+
+
   
   function splitText(text, maxChars = 300) {
     const sentences = text.match(/[^.!?]+[.!?]*/g) || [];
@@ -314,8 +325,18 @@ setIsPaused(false);
 
   return (
     <div className="dashboard-container">
-      {loading && <div className="loading-spinner">Loading...</div>}
-      {error && <div className="error-message">{error}</div>}
+      {loading && <div className="loading-spinner">Loading...Please Wait</div>}
+      {error && (
+  <div className="error-message">
+    <span>{error}</span>
+
+    {/* ❌ Close Button */}
+    <button className="error-close-btn" onClick={() => setError(null)}>
+      ✖
+    </button>
+  </div>
+)}
+
 
       <motion.div
         className="policy-upload-section"
@@ -466,6 +487,7 @@ setIsPaused(false);
 };
 
 export default Dashboard;
+
 
 
 
