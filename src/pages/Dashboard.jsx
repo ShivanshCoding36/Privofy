@@ -45,13 +45,14 @@ const Dashboard = () => {
   setError(null);
 
   try {
-    const response = await fetch("https://webscraper-sodl.onrender.com/api/GetData", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ URL: policyUrl }),
-    });
+    // const response = await fetch("https://webscraper-sodl.onrender.com/api/GetData", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ URL: policyUrl }),
+    // });
+    const response = await fetch(`/.netlify/functions/fetchPolicy?URL=${encodeURIComponent(policyUrl)}`);
 
     if (!response.ok) {
       throw new Error("Failed to fetch text from URL.");
@@ -487,3 +488,4 @@ setIsPaused(false);
 };
 
 export default Dashboard;
+
