@@ -147,7 +147,7 @@
 
 .generate-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(93, 125, 249, 0.4);
+  box-shadow: -1px 10px 20px 0px rgba(93, 125, 249, 0.4);
 }
 
 .summary-content {
@@ -217,7 +217,7 @@
 
 .file-upload-label:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(93, 125, 249, 0.4);
+  bbox-shadow: -1px 10px 20px 0px rgba(93, 125, 249, 0.4);
 }
 
 .analyze-button {
@@ -236,7 +236,7 @@
 
 .analyze-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(93, 125, 249, 0.4);
+ box-shadow: -1px 10px 20px 0px rgba(93, 125, 249, 0.4);
 }
 .file-name {
   font-size: 1rem;
@@ -265,7 +265,7 @@
 
 .translate-button:hover, .listen-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(52, 199, 89, 0.4);
+  box-shadow: -1px 10px 20px 0px rgba(93, 125, 249, 0.4);
 }
 
 .language-select {
@@ -313,7 +313,7 @@
 
 .search-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(52, 199, 89, 0.4);
+  box-shadow: -1px 10px 20px 0px rgba(93, 125, 249, 0.4);
 }
 
 /* Search Results */
@@ -376,7 +376,7 @@
 
 .translate-button:hover, .listen-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 149, 0, 0.4);
+  box-shadow: -1px 10px 20px 0px rgba(93, 125, 249, 0.4);
 }
 
 /* Fix for File Name */
@@ -587,3 +587,4 @@
   background: #800000;
   transform: scale(1.05);
 }
+
