@@ -87,7 +87,7 @@ const Dashboard = () => {
   const data = await res.json();
 
   // Extract visible text (same logic as working Python version)
-  const text_ = "";
+  let text_ = "";
 
   for (const item of data) {
     for (const block of item.textBlocks || []) {
@@ -524,6 +524,7 @@ setIsPaused(false);
 };
 
 export default Dashboard;
+
 
 
 
