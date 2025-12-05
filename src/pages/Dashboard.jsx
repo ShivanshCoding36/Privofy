@@ -55,7 +55,10 @@ const Dashboard = () => {
     const response = await fetch(`/.netlify/functions/fetchPolicy?URL=${encodeURIComponent(policyUrl)}`);
 
     if (!response.ok) {
+      console.log(response.status);
+      console.log(response.statusText);
       throw new Error("Failed to fetch text from URL.");
+      
     }
 
     const text = await response.text();
@@ -488,4 +491,5 @@ setIsPaused(false);
 };
 
 export default Dashboard;
+
 
