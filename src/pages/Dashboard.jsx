@@ -52,20 +52,53 @@ const Dashboard = () => {
     //   },
     //   body: JSON.stringify({ URL: policyUrl }),
     // });
-    const response = await fetch(`/.netlify/functions/fetchPolicy?URL=${encodeURIComponent(policyUrl)}`);
+    // const response = await fetch(`/.netlify/functions/fetchPolicy?URL=${encodeURIComponent(policyUrl)}`);
 
-    if (!response.ok) {
-      console.log(response.status);
-      console.log(response.statusText);
-      throw new Error("Failed to fetch text from URL.");
+    // if (!response.ok) {
+    //   console.log(response.status);
+    //   console.log(response.statusText);
+    //   throw new Error("Failed to fetch text from URL.");
       
-    }
+    // }
 
-    const text = await response.text();
-    console.log("Fetched text:", text);
+    // const text = await response.text();
+
+  const endpoint = `https://api.apify.com/v2/acts/smart-digital~website-content-text-extractor/run-sync-get-dataset-items?token=${process.env.REACT_APP_APIFY_API}`;
+
+  const payload = {
+    startUrl: policyUrl,
+    startUrls: []
+  };
+
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) {
+    console.log(response.status);
+    console.log(response.statusText);
+    throw new Error("Failed to fetch from Apify");
+  }
+
+  const data = await res.json();
+
+  // Extract visible text (same logic as working Python version)
+  const text_ = "";
+
+  for (const item of data) {
+    for (const block of item.textBlocks || []) {
+      text_=text_+" ."+block.text.trim()
+    }
+  }
+    
+    console.log("Fetched text:", text_);
 
     const { summary, safetyScore, impact, userImpact } =
-      await analyzePrivacyPolicy(text);
+      await analyzePrivacyPolicy(text_);
 
     setScore(safetyScore);
     setAiSummary(summary);
@@ -491,5 +524,6 @@ setIsPaused(false);
 };
 
 export default Dashboard;
+
 
 
