@@ -390,6 +390,7 @@ setIsPaused(false);
             placeholder="Search for a company's privacy policy..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
+            whileFocus={{ scale: 1.02, borderColor: "#3399ff" }}
           />
           <motion.button className="search-button" onClick={handleSearchPolicy}>
             Search
@@ -524,6 +525,7 @@ setIsPaused(false);
 };
 
 export default Dashboard;
+
 
 
 
