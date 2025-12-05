@@ -217,7 +217,7 @@
 
 .file-upload-label:hover {
   transform: translateY(-2px);
-  bbox-shadow: -1px 10px 20px 0px rgba(93, 125, 249, 0.4);
+  box-shadow: -1px 10px 20px 0px rgba(93, 125, 249, 0.4);
 }
 
 .analyze-button {
@@ -587,4 +587,5 @@
   background: #800000;
   transform: scale(1.05);
 }
+
 
