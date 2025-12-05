@@ -79,8 +79,8 @@ const Dashboard = () => {
   });
 
   if (!res.ok) {
-    console.log(response.status);
-    console.log(response.statusText);
+    console.log(res.status);
+    console.log(res.statusText);
     throw new Error("Failed to fetch from Apify");
   }
 
@@ -524,6 +524,7 @@ setIsPaused(false);
 };
 
 export default Dashboard;
+
 
 
 
