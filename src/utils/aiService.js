@@ -17,7 +17,7 @@ export const analyzePrivacyPolicy = async (policyText) => {
 
     // UPDATED PROMPT: Uses additive/subtractive logic to break the "70" bias
     const prompt = `
-      Act as a strict Data Privacy Auditor and Security Expert. Analyze the following privacy policy text critically. Do not be lenient.
+      Act as a Data Privacy Auditor and Security Expert. Analyze the following privacy policy text critically.
 
       Privacy Policy Text:
       "${policyText}"
@@ -72,4 +72,5 @@ export const analyzePrivacyPolicy = async (policyText) => {
     throw error;
   }
 };
+
 
