@@ -89,12 +89,39 @@
   height: 500px;
 }
 
-.air-quality-container {
+.score-section {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin-top: 2rem;
 }
 
+.flags-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.flags {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.flags.red {
+  background: #ffebee;
+  color: #b71c1c;
+}
+
+.flags.green {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.flags ul {
+  padding-left: 1.2rem;
+  margin: 0;
+}
 .ai-summary-section {
   background: white;
   border-radius: 15px;
@@ -597,6 +624,51 @@
   transform: scale(1.05);
 }
 
+.file-status-slot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f1f5f9; /* Light neutral grey/blue */
+  color: #004d66;
+  border: 1px solid #cbd5e1;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin: 15px auto;
+  width: 100%;
+  max-width: 600px; /* Aligns with input fields usually */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
 
+.file-name-text {
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 10px;
+}
 
+.remove-filetext-btn {
+  background: #e2e8f0;
+  border: none;
+  color: #004d66;
+  font-size: 14px;
+  cursor: pointer;
+  
+  width: 28px;
+  height: 28px;
+  border-radius: 50%; /* Circular button */
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0; /* Prevents button from squishing on small screens */
 
+  transition: all 0.2s ease;
+}
+
+.remove-filetext-btn:hover {
+  background: #cbd5e1;
+  color: #0f172a;
+  transform: scale(1.1);
+}
