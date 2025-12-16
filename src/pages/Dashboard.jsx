@@ -15,6 +15,8 @@ const Dashboard = () => {
   const [aiImpact, setImpact] = useState('');
   const [aiUser, setAiUser] = useState('');
   const [score, setScore] = useState(0);
+  const [RedFlags, setRedFlags] = useState([]);
+  const [GreenFlags, setGreenFlags] = useState([]);
   const [policyFile, setPolicyFile] = useState(null);
   const [fileName, setFileName] = useState('');
   const [error, setError] = useState(null);
@@ -96,18 +98,22 @@ const Dashboard = () => {
   }
     
     console.log("Fetched text:", text_);
+     setPolicyFile(text_);
+     let final=policyUrl.replace('https://','')
+     final=final.replace('http://','')
+     final=final.split('/')[0]
+      setFileName(final);
+    // const { summary, safetyScore, impact, userImpact } =
+    //   await analyzePrivacyPolicy(text_);
 
-    const { summary, safetyScore, impact, userImpact } =
-      await analyzePrivacyPolicy(text_);
+    // setScore(safetyScore);
+    // setAiSummary(summary);
+    // setImpact(impact);
+    // setAiUser(userImpact);
 
-    setScore(safetyScore);
-    setAiSummary(summary);
-    setImpact(impact);
-    setAiUser(userImpact);
-
-    const txt = `Impact: ${impact}, Takeaways: ${userImpact}, Summary: ${summary}`;
-    setText(txt);
-    setFileName(`Fetched from URL: ${policyUrl}`);
+    // const txt = `Impact: ${impact}, Takeaways: ${userImpact}, Summary: ${summary}`;
+    // setText(txt);
+    // setFileName(`Fetched from URL: ${policyUrl}`);
 
   } catch (err) {
     console.error("URL Fetch Error:", err);
@@ -240,7 +246,7 @@ const Dashboard = () => {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setPolicyFile(file);
+      setPolicyFile(file.text());
       setFileName(file.name.toLowerCase());
     }
   };
@@ -253,13 +259,15 @@ const Dashboard = () => {
     setLoading(true);
     setError(null);
     try {
-      const text = await policyFile.text();
-      const { summary, safetyScore, impact, userImpact } = await analyzePrivacyPolicy(text);
+      const text = await policyFile;
+      const { summary, safetyScore, impact, userImpact,redFlags,greenFlags } = await analyzePrivacyPolicy(text);
 
       setScore(safetyScore);
       setAiSummary(summary);
       setImpact(impact);
       setAiUser(userImpact);
+      setRedFlags(redFlags || []);
+      setGreenFlags(greenFlags || []);
       const txt = `Impact: ${impact}, Takeaways: ${userImpact}, Summary: ${summary}`;
       setText(txt);
     } catch (err) {
@@ -270,16 +278,27 @@ const Dashboard = () => {
     }
   };
 
-  function splitForTranslate(text, maxChars = 1000) {
+ function chunkByLimit(text, limit = 1800) {
     const chunks = [];
     let start = 0;
     while (start < text.length) {
-      chunks.push(text.slice(start, start + maxChars));
-      start += maxChars;
+      chunks.push(text.slice(start, start + limit));
+      start += limit;
     }
     return chunks;
-  }
+}
+const translate=async(text)=>{
+  const chunks = chunkByLimit(text);
+const translated = [];
 
+for (const chunk of chunks) {
+  const res = await handleTranslate(chunk);
+  translated.push(res);
+}
+
+const finalText = translated.join(" ");
+return finalText;
+}
   const handleTranslate = async () => {
     if (!getText) return;
     setError(null);
@@ -302,12 +321,12 @@ const Dashboard = () => {
         });
       setTranslatedSummary(response.data.translated_text);
 
-// ✅ Clear old audio when translation changes
-chunkAudioRefs.current = [];
-currentChunkIndexRef.current = 0;
-currentAudioRef.current = null;
-setIsSpeaking(false);
-setIsPaused(false);
+    // ✅ Clear old audio when translation changes
+    chunkAudioRefs.current = [];
+    currentChunkIndexRef.current = 0;
+    currentAudioRef.current = null;
+    setIsSpeaking(false);
+    setIsPaused(false);
 
     }catch (error) {
       console.error("Translation Error:", error.response?.data || error.message);
@@ -328,6 +347,11 @@ setIsPaused(false);
   const handleSpeedChange = (e) => {
     setSpeed(parseFloat(e.target.value));
   };
+  function handleClose(){
+    setPolicyFile(null);
+    setFileName(null);
+    setPolicyUrl(null);
+  }
 
   const handleSearchPolicy = async () => {
     setLoading(true);
@@ -347,7 +371,8 @@ setIsPaused(false);
         setAiUser(policy.userimpact);
         setImpact(policy.impact);
         setScore(policy.safety_score);
-
+        setRedFlags(policy.red_flags);
+        setGreenFlags(policy.green_flags);
         const txt = `Impact: ${policy.impact}, Takeaways: ${policy.userimpact}, Summary: ${policy.summary}`;
         setText(txt);
       } else {
@@ -396,9 +421,19 @@ setIsPaused(false);
             Search
           </motion.button>
         </div>
-
-        {fileName && <motion.p className="file-name">{fileName}</motion.p>}
-
+        {fileName && (
+          <motion.div 
+            className="file-status-slot"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+          >
+            <span className="file-name-text">📄 {fileName}</span>
+            <button className="remove-filetext-btn" onClick={handleClose}>
+              ✖
+            </button>
+          </motion.div>
+        )}
         <motion.div
   className="file-url-upload-wrapper"
   initial={{ opacity: 0, y: 20 }}
@@ -490,7 +525,7 @@ setIsPaused(false);
 </select>
 
 
-            <motion.button className="translate-button" onClick={handleTranslate}>Translate</motion.button>
+            <motion.button className="translate-button" onClick={translate}>Translate</motion.button>
 
             <div className="audio-player">
   <button className="play-pause-button" onClick={handleTextToSpeech}>
@@ -517,17 +552,36 @@ setIsPaused(false);
         <h3>Translated Result</h3> {translatedSummary}
       </div>
 
-      <div className="air-quality-container">
+
+
+      <div className="score-section">
         <DetailsCard data={score} />
+        <div className="flags-container">
+          <div className="flags red">
+         <h4>🚩 Red Flags</h4>
+            <ul>
+              {Array.isArray(RedFlags) && RedFlags.length > 0 ? (
+                 RedFlags.map((f, i) => <li key={i}>{f}</li>)
+              ) : (
+                 <li>No red flags detected.</li>
+              )}
+            </ul>
+    </div>
+
+    <div className="flags green">
+      <h4>✅ Green Flags</h4>
+            <ul>
+              {Array.isArray(GreenFlags) && GreenFlags.length > 0 ? (
+                GreenFlags.map((f, i) => <li key={i}>{f}</li>)
+              ) : (
+                <li>No green flags detected.</li>
+              )}
+            </ul>
+    </div>
+  </div>
       </div>
     </div>
   );
 };
 
 export default Dashboard;
-
-
-
-
-
-
