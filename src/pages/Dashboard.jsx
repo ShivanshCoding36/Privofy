@@ -350,7 +350,6 @@ return finalText;
   function handleClose(){
     setPolicyFile(null);
     setFileName(null);
-    setPolicyUrl(null);
   }
 
   const handleSearchPolicy = async () => {
@@ -585,3 +584,4 @@ return finalText;
 };
 
 export default Dashboard;
+
