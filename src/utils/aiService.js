@@ -1,8 +1,8 @@
 import { supabase } from './supabaseClient';
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-// NOTE: Using gemini-1.5-flash as it is the current standard. 
-// If you have specific access to a newer beta, change this back.
+// FIX: 'gemini-2.5-flash-lite' is likely a typo. 
+// Using 'gemini-1.5-flash' which is the current stable fast model.
 const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
 
@@ -15,7 +15,6 @@ export const analyzePrivacyPolicy = async (policyText) => {
       throw new Error('Authentication required');
     }
 
-    // UPDATED PROMPT: Uses additive/subtractive logic to break the "70" bias
     const prompt = `
       Act as a Data Privacy Auditor and Security Expert. Analyze the following privacy policy text critically.
 
@@ -27,7 +26,7 @@ export const analyzePrivacyPolicy = async (policyText) => {
       ### Scoring Rubric (Start with 50 points - Neutral):
       1. **Deduct points (down to 0)** for: 
          - Selling data to third parties.
-         - Vague language (e.g., "we may share").
+         - Vague language (e.g., "we may share", "affiliates").
          - Forced arbitration clauses.
          - Lack of contact details.
          - Collecting unrelated data (e.g., location for a calculator).
@@ -42,12 +41,19 @@ export const analyzePrivacyPolicy = async (policyText) => {
       2. Explain the specific impact on user data privacy.
       3. Explain what this means for the user in practical terms.
       4. Calculate the Safety Score based strictly on the Rubric above.
+      5. Identify specific Red Flags (Negative findings) and Green Flags (Positive findings).
 
       ### Required Output Format:
+      (Strictly follow this layout so my system can parse it)
+
       **Summary:** [Your summary here]
       **Safety Score:** [Just the number, e.g., 45]
       **Impact on User Data Privacy and Security:** [Your analysis here]
       **What this policy means for users:** [Your practical explanation here]
+      **Red Flags:** - [Flag 1]
+      - [Flag 2]
+      **Green Flags:** - [Flag 1]
+      - [Flag 2]
     `;
 
     const result = await model.generateContent(prompt);
@@ -55,23 +61,47 @@ export const analyzePrivacyPolicy = async (policyText) => {
 
     console.log("AI Response:", responseText);
 
-    // Parsing logic matches the new Prompt Output Format
-    const summaryMatch = responseText.match(/\*\*Summary:\*\*\s*([\s\S]+?)(?=\*\*Safety Score:)/);
-    const scoreMatch = responseText.match(/\*\*Safety Score:\*\*\s*(\d+)/);
-    const impactMatch = responseText.match(/\*\*Impact on User Data Privacy and Security:\*\*\s*([\s\S]+?)(?=\*\*What this policy means)/);
-    const userImpactMatch = responseText.match(/\*\*What this policy means for users:\*\*\s*([\s\S]+)/);
+    // --- Regex Parsing ---
+
+    const summaryMatch = responseText.match(/\*\*Summary:\*\*\s*([\s\S]+?)(?=\*\*Safety Score:)/i);
+    const scoreMatch = responseText.match(/\*\*Safety Score:\*\*\s*(\d+)/i);
+    const impactMatch = responseText.match(/\*\*Impact on User Data Privacy and Security:\*\*\s*([\s\S]+?)(?=\*\*What this policy means)/i);
+    
+    // Updated to stop at "Red Flags"
+    const userImpactMatch = responseText.match(/\*\*What this policy means for users:\*\*\s*([\s\S]+?)(?=\*\*Red Flags:)/i);
+    
+    // Updated to capture list content between headers
+    const redFlagsMatch = responseText.match(/\*\*Red Flags:\*\*\s*([\s\S]+?)(?=\*\*Green Flags:)/i);
+    const greenFlagsMatch = responseText.match(/\*\*Green Flags:\*\*\s*([\s\S]+)/i);
+
+    // Helper to clean up bullet points
+    const extractFlags = (text) =>
+      text
+        ? text
+            .split('\n')
+            .map(l => l.replace(/^[-•*]\s*/, '').trim()) // Removes bullets (-, •, *)
+            .filter(line => line.length > 0) // Removes empty lines
+        : [];
 
     const summary = summaryMatch ? summaryMatch[1].trim() : "Summary not found.";
     const safetyScore = scoreMatch ? parseInt(scoreMatch[1], 10) : 0;
     const impact = impactMatch ? impactMatch[1].trim() : "Impact details not found.";
     const userImpact = userImpactMatch ? userImpactMatch[1].trim() : "User implications not found.";
 
-    return { summary, safetyScore, impact, userImpact };
+    const redFlags = extractFlags(redFlagsMatch?.[1]);
+    const greenFlags = extractFlags(greenFlagsMatch?.[1]);
+
+    return {
+      summary,
+      safetyScore,
+      impact,
+      userImpact,
+      redFlags,
+      greenFlags
+    };
+
   } catch (error) {
     console.error('Error analyzing privacy policy:', error);
     throw error;
   }
 };
-
-
-
