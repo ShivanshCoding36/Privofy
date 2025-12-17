@@ -35,7 +35,7 @@ export const analyzePrivacyPolicy = async (policyText) => {
          - Clear "Right to Delete" instructions.
          - Explicit statement that data is NOT sold.
          - Short, defined data retention periods.
-      3. prioritise good stuff mentioned over average bad loopholes while calculating the score
+      3. prioritise good stuff mentioned over average bad loopholes while calculating the score; not during red/green flags
       ### Instructions:
       1. Summarize key points (under 100 words).
       2. Explain the specific impact on user data privacy.
@@ -105,4 +105,5 @@ export const analyzePrivacyPolicy = async (policyText) => {
     throw error;
   }
 };
+
 
