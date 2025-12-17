@@ -287,8 +287,8 @@ const Dashboard = () => {
     }
     return chunks;
 }
-const translate=async(text)=>{
-  const chunks = chunkByLimit(text);
+const translate=async()=>{
+  const chunks = chunkByLimit(getText);
 const translated = [];
 
 for (const chunk of chunks) {
@@ -584,4 +584,5 @@ return finalText;
 };
 
 export default Dashboard;
+
 
