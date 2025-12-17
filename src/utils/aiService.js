@@ -24,18 +24,18 @@ export const analyzePrivacyPolicy = async (policyText) => {
       --------------------------
       
       ### Scoring Rubric (Start with 50 points - Neutral):
-      1. **Deduct points (down to 0)** for: 
+      1. **Deduct points (down to 20)** for: 
          - Selling data to third parties.
          - Vague language (e.g., "we may share", "affiliates").
          - Forced arbitration clauses.
          - Lack of contact details.
          - Collecting unrelated data (e.g., location for a calculator).
-      2. **Add points (up to 100)** for: 
+      2. **Add points (up to 95)** for: 
          - Explicit mention of Encryption (AES, SSL/TLS).
          - Clear "Right to Delete" instructions.
          - Explicit statement that data is NOT sold.
          - Short, defined data retention periods.
-      
+      3. prioritise good stuff mentioned over average bad loopholes while calculating the score
       ### Instructions:
       1. Summarize key points (under 100 words).
       2. Explain the specific impact on user data privacy.
@@ -105,3 +105,4 @@ export const analyzePrivacyPolicy = async (policyText) => {
     throw error;
   }
 };
+
