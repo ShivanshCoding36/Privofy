@@ -144,6 +144,8 @@
   cursor: pointer;
   color: #666;
   padding: 5px;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 .social-auth-buttons {
@@ -204,5 +206,6 @@
   padding: 0 10px;
   color: #666;
 }
+
 
 
