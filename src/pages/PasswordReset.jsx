@@ -12,7 +12,7 @@ const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const isResetMode = searchParams.get("token");
+  const isResetMode = window.location.hash.includes("type=recovery");
 
   const handleRequestReset = async (e) => {
     e.preventDefault();
@@ -89,3 +89,4 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
+
