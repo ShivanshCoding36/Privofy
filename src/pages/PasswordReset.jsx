@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { supabase } from '../utils/supabaseClient'; // Import your Supabase client
-import "./ResetPassword.css"; // Import CSS for styling
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../utils/supabaseClient";
+import "./ResetPassword.css";
 
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
@@ -9,11 +9,33 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const isResetMode = window.location.hash.includes("type=recovery");
+  // 🔑 Detect recovery mode from QUERY PARAMS (NOT hash)
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+  const type = params.get("type");
+  const isResetMode = token && type === "recovery";
 
+  // 🔐 CRITICAL: Exchange recovery token for session
+  useEffect(() => {
+    const verifyRecovery = async () => {
+      if (isResetMode) {
+        const { error } = await supabase.auth.verifyOtp({
+          token,
+          type: "recovery",
+        });
+
+        if (error) {
+          setError("Invalid or expired reset link.");
+        }
+      }
+    };
+
+    verifyRecovery();
+  }, [isResetMode, token]);
+
+  // 📩 Request password reset email
   const handleRequestReset = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -29,9 +51,11 @@ const ResetPassword = () => {
     } else {
       setMessage("Check your email for a password reset link.");
     }
+
     setLoading(false);
   };
 
+  // 🔑 Set new password
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -43,15 +67,20 @@ const ResetPassword = () => {
     if (error) {
       setError(error.message);
     } else {
-      setMessage("Your password has been reset successfully!");
-      setTimeout(() => navigate("/login"), 3000); // Redirect to login page
+      setMessage("Password reset successful. Redirecting to login...");
+      setTimeout(async () => {
+        await supabase.auth.signOut();
+        navigate("/login");
+      }, 2500);
     }
+
     setLoading(false);
   };
 
   return (
     <div className="reset-container">
       <h2>{isResetMode ? "Set a New Password" : "Reset Your Password"}</h2>
+
       {message && <p className="success-message">{message}</p>}
       {error && <p className="error-message">{error}</p>}
 
@@ -65,6 +94,7 @@ const ResetPassword = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
           <button type="submit" disabled={loading}>
             {loading ? "Sending..." : "Send Reset Link"}
           </button>
@@ -79,6 +109,7 @@ const ResetPassword = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
           <button type="submit" disabled={loading}>
             {loading ? "Resetting..." : "Reset Password"}
           </button>
@@ -89,4 +120,3 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
-
