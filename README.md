@@ -4,90 +4,106 @@
 
 ---
 
-## 01. Team Details
-**Team Name:** Privofy  
-**Team Leader:** Shivansh Mathur  
+## 01. Founder Details
+Shivansh Mathur
+
+[Linkedin](https://www.linkedin.com/in/ShivanshMathur9/)
+[Youtube](https://www.youtube.com/@shivanshmathur9/)
 
 ---
 
 ## 02. Problem Statement
-When people sign up for a new online service (an app or a website), most users don’t bother reading the terms & conditions or privacy policies. Even if they do, many don’t understand them.
+When people sign up for a new online service (an app or a website), most users don’t bother reading the terms & conditions or privacy policies. Even when they do, these documents are often written in complex legal language that is difficult to understand.
 
 This leads to:
-- Companies exploiting users’ data.
-- Increased risks of data leaks, spam calls, and false claims.
-- Users unknowingly approving harmful privacy policies.
+- Companies exploiting users’ data through vague or misleading clauses.
+- Increased risks of data leaks, spam calls, and unauthorized data sharing.
+- Users unknowingly approving policies that negatively impact their privacy.
 
 📊 According to surveys:
 - **60% of Indian adults** and **90% of adults worldwide** fear unauthorized data access.  
-- Only **11%** actually understand privacy policies.
+- Only **11%** of users actually understand what privacy policies mean.
 
 ---
 
 ## 03. Solution
-Privofy is a **web-based tool** that allows users to upload or search for privacy policies. An AI model then:
-- Analyzes the policy.
-- Explains it in **layman’s terms**.
-- Highlights **legalities, risks, and concerns**.
-- Provides a **safety score** for the policy.
-- Supports **translation** and **text-to-speech (TTS)** in the user’s preferred language.
+Privofy is a **web-based privacy policy analysis platform** that empowers users to understand what they are agreeing to before accepting any terms.
 
-Aligned with **SDG 16 (Peace, Justice and Strong Institutions)**, the goal is to make privacy transparent and accessible to everyone.
+Users can:
+- Upload a privacy policy file.
+- Search for a company’s privacy policy from a database.
+- Fetch a privacy policy directly using a **public URL**.
 
----
+An AI model then:
+- Analyzes the policy in depth.
+- Explains it in **simple, non-legal language**.
+- Highlights **key risks and protections**.
+- Assigns a **safety score out of 100**.
+- Identifies **Red Flags** (potential concerns) and **Green Flags** (positive practices).
+- Supports **multilingual translation and text-to-speech (TTS)** for accessibility.
 
-## 04. Technology Stack
-- **Frontend:** React.js, HTML, Vanilla CSS  
-- **Backend & Auth:** Supabase  
-- **AI Model:** Google Gemini (for policy analysis & insights)  
-- **Translation & TTS:** Integrated multilingual support  
-
----
-
-## 05. Implementation
-1. Users log in and access a **dashboard** with the main features.  
-2. They can either:  
-   - Search for a company’s privacy policy in the database.  
-   - Upload a policy document manually.  
-3. The backend processes the document using the AI model.  
-4. The system generates insights such as:  
-   - Policy summary.  
-   - How the company uses user data.  
-   - Key legal and security takeaways.  
-   - A **safety score** based on transparency, data handling, and legal risks.  
-5. Results can be translated and listened to in the user’s preferred language.
+Privofy is aligned with **UN Sustainable Development Goal 16 (Peace, Justice and Strong Institutions)** by promoting transparency, accountability, and informed digital consent.
 
 ---
 
-## 06. Key Features
-- 📑 Upload or search for any company’s privacy policy.  
-- 🧠 AI-powered **policy analysis** in simple language.  
-- 🔒 **Safety score** for quick evaluation of data security & legal risks.  
-- 🌍 **Multilingual translation** support.  
-- 🔊 **Text-to-speech** feature for accessibility.  
+## 04. Implementation
+1. Users authenticate and access a unified **dashboard**.
+2. They can choose one of three ways to load a privacy policy:
+   - Upload a document.
+   - Search for a company’s policy from the database.
+   - Fetch policy content using a public URL.
+3. Once the policy content is loaded, users press **Analyze Policy** button.
+4. The AI generates structured insights, including:
+   - Impact on user data privacy and security.
+   - Practical implications for users.
+   - A **safety score** based on a defined scoring rubric.
+   - Clear **Red Flags** and **Green Flags**.
+   - - A concise policy summary.
+5. Each insight block can be:
+   - Translated independently into the user’s preferred language.
+   - Listened to via text-to-speech.
+   - Toggled between original English and translated versions.
+6. Users can retranslate content at any time, with translations updated dynamically.
 
 ---
 
-## 07. Impact & Scalability
-- Makes privacy policies **understandable to everyone**, regardless of background.  
-- Helps users make **informed decisions** before accepting terms & conditions.  
-- May pressure companies to write **clearer and fairer policies**.  
-- Scalable as a **global web platform** with minimal infrastructure needs.  
+## 05. Key Features
+- 📑 Upload, search, or fetch any company’s privacy policy.  
+- 🔍 **Two-step analysis process** (load content → analyze) for better control.  
+- 🧠 AI-powered explanations in **plain, easy-to-understand layman language**.  
+- 🔒 **Safety score (0–100)** based on transparency, data handling, and legal risks.  
+- 🚩 **Red Flags** highlighting potential privacy concerns.  
+- ✅ **Green Flags** highlighting positive privacy practices.  
+- 🌍 **Block-wise multilingual translation** with language toggle support.  
+- 🔊 **Text-to-speech (TTS)** for accessibility and ease of use.  
 
 ---
 
-## 08. Conclusion
-Privofy is a **first-of-its-kind solution** that automates the complex process of analyzing privacy policies. Unlike traditional methods (such as hiring legal experts), Privofy makes data privacy **accessible, transparent, and user-friendly**.  
+## 06. Impact & Scalability
+- Makes privacy policies **accessible to everyone**, regardless of technical or legal background.
+- Helps users make **informed decisions** before accepting digital agreements.
+- Encourages companies to adopt **clearer, more ethical privacy practices**.
+- Designed as a **scalable web platform**, capable of serving users globally with minimal infrastructure overhead.
+
+---
+
+## 07. Conclusion
+Privofy is a **comprehensive privacy awareness tool** that automates the complex and often intimidating process of understanding privacy policies.
+
+Unlike traditional approaches that require legal expertise, Privofy:
+- Breaks down policies into actionable insights.
+- Visually highlights risks and protections.
+- Supports multiple languages and accessibility features.
 
 This project:
-- Solves a **real-world problem** of data security and exploitation.  
-- Stands out due to its **unique combination of AI, translation, and TTS**.  
-- Aligns with **SDG 16**, where minimal work has been done so far.  
+- Addresses a **critical real-world issue** of data privacy and user exploitation.
+- Stands out through its **unique combination of AI analysis, scoring, flags, translation, and TTS**.
+- Strongly aligns with **SDG 16**, an area where impactful digital solutions are still limited.
 
 ---
 
 ## 09. References & Bibliography
-- [Economic Times Survey](https://economictimes.indiatimes.com/small-biz/policy-trends/60-online-users-fear-unauthorised-data-collection-only-11-users-read-privacy-policies-survey/articleshow/68355981.cms?from=mdr)  
-- [Exploding Topics – Data Privacy Stats](https://explodingtopics.com/blog/data-privacy-stats)  
+- [Economic Times – Privacy Policy Awareness Survey](https://economictimes.indiatimes.com/small-biz/policy-trends/60-online-users-fear-unauthorised-data-collection-only-11-users-read-privacy-policies-survey/articleshow/68355981.cms)  
+- [Exploding Topics – Data Privacy Statistics](https://explodingtopics.com/blog/data-privacy-stats)  
 
 ---
