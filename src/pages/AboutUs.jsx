@@ -53,7 +53,7 @@ const AboutUs = () => {
             transition={{ duration: 0.8, delay: index * 0.2 }}
           >
             <div className="card-image-container">
-              <img src={card.image} alt={card.title} />
+              <img src={card.image} loading="lazy" alt={card.title} />
             </div>
             <div className="card-content">
               <h2>{card.title}</h2>
@@ -74,5 +74,6 @@ const AboutUs = () => {
     </div>
   );
 };
+
 
 export default AboutUs; 
