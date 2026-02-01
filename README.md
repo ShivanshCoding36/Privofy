@@ -1,6 +1,9 @@
-# Privofy
+# Privofy – AI Privacy Policy Analyzer
 
-**Privacy Decoded, Risks Revealed**
+Privofy is an AI-powered web application that analyzes privacy policies and explains
+data usage, risks, red flags, green flags, and safety scores in simple language.
+
+*Privacy Decoded Risks Revealed*
 
 ---
 
