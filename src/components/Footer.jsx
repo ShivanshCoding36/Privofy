@@ -9,9 +9,7 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-section">
           <h3>Privofy</h3>
-          <p>
-Privofy is an AI-powered web application that analyzes privacy policies and explains
-data usage, risks, red flags, green flags, and safety scores in simple language.</p>
+          <p>Privacy decoded, risks revealed.</p>
         </div>
         
         <div className="footer-section">
