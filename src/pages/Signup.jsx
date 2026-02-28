@@ -25,6 +25,17 @@ const Signup = () => {
     });
   };
 
+  const getPasswordRuleState = (pwd) => ({
+    length: pwd.length >= 8,
+    number: /\d/.test(pwd),
+    lower: /[a-z]/.test(pwd),
+    upper: /[A-Z]/.test(pwd),
+    special: /[!@#$%^&*]/.test(pwd),
+  });
+
+  const rules = getPasswordRuleState(formData.password);
+  const isPasswordValid = Object.values(rules).every(Boolean);
+
   const handleSocialLogin = async (provider) => {
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -70,7 +81,12 @@ const Signup = () => {
       setError("Passwords don't match");
       return;
     }
-    
+
+    if (!isPasswordValid) {
+      setError("Password does not meet requirements");
+      return;
+    }
+
     setLoading(true);
     
     try {
@@ -153,8 +169,33 @@ const Signup = () => {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
+            <div className="password-rules-box">
+              <div className="password-hint">Password must contain:</div>
+              <ul className="password-rules">
+                <li className={`password-rule ${rules.length ? 'rule-valid' : 'rule-invalid'}`}>
+                  <span className="rule-icon">{rules.length ? '✅' : '❌'}</span>
+                  At least 8 characters
+                </li>
+                <li className={`password-rule ${rules.number ? 'rule-valid' : 'rule-invalid'}`}>
+                  <span className="rule-icon">{rules.number ? '✅' : '❌'}</span>
+                  At least 1 number (0–9)
+                </li>
+                <li className={`password-rule ${rules.lower ? 'rule-valid' : 'rule-invalid'}`}>
+                  <span className="rule-icon">{rules.lower ? '✅' : '❌'}</span>
+                  At least 1 lowercase letter (a–z)
+                </li>
+                <li className={`password-rule ${rules.upper ? 'rule-valid' : 'rule-invalid'}`}>
+                  <span className="rule-icon">{rules.upper ? '✅' : '❌'}</span>
+                  At least 1 uppercase letter (A–Z)
+                </li>
+                <li className={`password-rule ${rules.special ? 'rule-valid' : 'rule-invalid'}`}>
+                  <span className="rule-icon">{rules.special ? '✅' : '❌'}</span>
+                  At least 1 special symbol (!@#$%^&*)
+                </li>
+              </ul>
+            </div>
           </div>
-          
+
           <div className="form-group password-input">
             <label htmlFor="confirmPassword">Confirm Password</label>
             <div className="password-field">
@@ -179,7 +220,7 @@ const Signup = () => {
           <button 
             type="submit" 
             className="auth-button"
-            disabled={loading}
+            disabled={loading || !isPasswordValid}
           >
             {loading ? 'Creating Account...' : 'Sign Up'}
           </button>
