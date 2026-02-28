@@ -13,6 +13,7 @@ import Pricing from './pages/Pricing';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
 import ProtectedRoute from './components/ProtectedRoute';
+import AuthCallback from"./pages/AuthCallback"
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -52,6 +53,7 @@ function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             <Route 
               path="/dashboard" 
               element={
@@ -69,3 +71,4 @@ function App() {
 }
 
 export default App;
+
