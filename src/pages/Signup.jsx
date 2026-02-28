@@ -41,6 +41,7 @@ const Signup = () => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
+          scopes: 'read:user',
           redirectTo: `${window.location.origin}/auth/callback`
         }
       });
@@ -257,6 +258,7 @@ const Signup = () => {
 };
 
 export default Signup;
+
 
 
 
