@@ -1,120 +1,169 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import "./ResetPassword.css";
 
 const ResetPassword = () => {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [hasSession, setHasSession] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // 🔑 Detect recovery mode from QUERY PARAMS (NOT hash)
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("token");
-  const type = params.get("type");
-  const isResetMode = token && type === "recovery";
-
-  // 🔐 CRITICAL: Exchange recovery token for session
   useEffect(() => {
-    const verifyRecovery = async () => {
-      if (isResetMode) {
-        const { error } = await supabase.auth.verifyOtp({
-          token,
-          type: "recovery",
-        });
+    const checkSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
 
-        if (error) {
-          setError("Invalid or expired reset link.");
-        }
+      if (error || !data.session) {
+        setError(
+          "Your password reset link is invalid or has expired. Please request a new one."
+        );
+        setHasSession(false);
+        return;
       }
+
+      setHasSession(true);
     };
 
-    verifyRecovery();
-  }, [isResetMode, token]);
+    checkSession();
+  }, []);
 
-  // 📩 Request password reset email
-  const handleRequestReset = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
-    setError("");
+  const getPasswordRuleState = (pwd) => ({
+    length: pwd.length >= 8,
+    number: /\d/.test(pwd),
+    lower: /[a-z]/.test(pwd),
+    upper: /[A-Z]/.test(pwd),
+    special: /[!@#$%^&*]/.test(pwd),
+  });
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
+  const rules = getPasswordRuleState(password);
+  const isPasswordValid = Object.values(rules).every(Boolean);
 
-    if (error) {
-      setError(error.message);
-    } else {
-      setMessage("Check your email for a password reset link.");
-    }
-
-    setLoading(false);
-  };
-
-  // 🔑 Set new password
   const handleResetPassword = async (e) => {
     e.preventDefault();
+
+    if (!hasSession) {
+      setError(
+        "Your password reset link is invalid or has expired. Please request a new one."
+      );
+      return;
+    }
+
+    if (!isPasswordValid) {
+      setError("Password does not meet requirements.");
+      return;
+    }
+
     setLoading(true);
     setMessage("");
     setError("");
 
-    const { error } = await supabase.auth.updateUser({ password });
+    const { error } = await supabase.auth.updateUser({ password: password });
 
     if (error) {
       setError(error.message);
-    } else {
-      setMessage("Password reset successful. Redirecting to login...");
-      setTimeout(async () => {
-        await supabase.auth.signOut();
-        navigate("/login");
-      }, 2500);
+      setLoading(false);
+      return;
     }
 
+    setMessage("Password reset successful. Redirecting to Dashboard...");
     setLoading(false);
+
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 2000);
   };
 
   return (
     <div className="reset-container">
-      <h2>{isResetMode ? "Set a New Password" : "Reset Your Password"}</h2>
+      <h2>Reset Your Password</h2>
 
-      {message && <p className="success-message">{message}</p>}
+      {message && <h3 className="success-message">{message}</h3>}
       {error && <p className="error-message">{error}</p>}
 
-      {!isResetMode ? (
-        <form onSubmit={handleRequestReset}>
-          <label>Email Address</label>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <button type="submit" disabled={loading}>
-            {loading ? "Sending..." : "Send Reset Link"}
-          </button>
-        </form>
-      ) : (
-        <form onSubmit={handleResetPassword}>
-          <label>New Password</label>
-          <input
-            type="password"
-            placeholder="Enter new password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          <button type="submit" disabled={loading}>
-            {loading ? "Resetting..." : "Reset Password"}
-          </button>
-        </form>
-      )}
+      <form onSubmit={handleResetPassword}>
+        
+         <div className="form-group password-input">
+            <label htmlFor="password">Password</label>
+            <div className="password-field">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+          </div>
+        <AnimatePresence>
+         {password.length > 0 && (
+        <motion.div 
+        className="password-rules-box"
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: 'auto', opacity: 1 }}
+        exit={{ height: 0, opacity: 0 }}
+      >
+        <div className="password-hint">Password must contain:</div>
+        <ul className="password-rules">
+          <li
+            className={`password-rule ${
+              rules.length ? "rule-valid" : "rule-invalid"
+            }`}
+          >
+            <span className="rule-icon">{rules.length ? "✅" : "❌"}</span>
+            At least 8 characters
+          </li>
+          <li
+            className={`password-rule ${
+              rules.number ? "rule-valid" : "rule-invalid"
+            }`}
+          >
+            <span className="rule-icon">{rules.number ? "✅" : "❌"}</span>
+            At least 1 number (0–9)
+          </li>
+          <li
+            className={`password-rule ${
+              rules.lower ? "rule-valid" : "rule-invalid"
+            }`}
+          >
+            <span className="rule-icon">{rules.lower ? "✅" : "❌"}</span>
+            At least 1 lowercase letter (a–z)
+          </li>
+          <li
+            className={`password-rule ${
+              rules.upper ? "rule-valid" : "rule-invalid"
+            }`}
+          >
+            <span className="rule-icon">{rules.upper ? "✅" : "❌"}</span>
+            At least 1 uppercase letter (A–Z)
+          </li>
+          <li
+            className={`password-rule ${
+              rules.special ? "rule-valid" : "rule-invalid"
+            }`}
+          >
+            <span className="rule-icon">{rules.special ? "✅" : "❌"}</span>
+            At least 1 special symbol (!@#$%^&*)
+          </li>
+        </ul>
+        </motion.div>
+         )}
+         </AnimatePresence>
+        <button type="submit" disabled={loading || !isPasswordValid}>
+          {loading ? "Resetting..." : "Reset Password"}
+        </button>
+      </form>
     </div>
   );
 };
