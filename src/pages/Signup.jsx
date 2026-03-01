@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FaEye, FaEyeSlash, FaGoogle, FaGithub } from 'react-icons/fa';
 import supabase from '../utils/supabaseClient';
 import '../styles/Auth.css';
+import Navbar from '../components/Navbar';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -41,7 +42,6 @@ const Signup = () => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          scopes: 'read:user',
           redirectTo: `${window.location.origin}/auth/callback`
         }
       });
@@ -115,6 +115,8 @@ const Signup = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="auth-container">
       <motion.div 
         className="auth-form-container"
@@ -170,7 +172,30 @@ const Signup = () => {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
-            <div className="password-rules-box">
+            
+          </div>
+
+          <div className="form-group password-input">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <div className="password-field">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+              <button 
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+          </div>
+          <div className="password-rules-box">
               <div className="password-hint">Password must contain:</div>
               <ul className="password-rules">
                 <li className={`password-rule ${rules.length ? 'rule-valid' : 'rule-invalid'}`}>
@@ -195,29 +220,6 @@ const Signup = () => {
                 </li>
               </ul>
             </div>
-          </div>
-
-          <div className="form-group password-input">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <div className="password-field">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-              />
-              <button 
-                type="button"
-                className="password-toggle"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
-                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-          </div>
-          
           <button 
             type="submit" 
             className="auth-button"
@@ -254,11 +256,11 @@ const Signup = () => {
         </div>
       </motion.div>
     </div>
+    </>
   );
 };
 
 export default Signup;
-
 
 
 
