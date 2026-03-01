@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
-import { motion, AnimatePresence } from 'framer-motion';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import "./ResetPassword.css";
+import Navbar from '../components/Navbar';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -54,7 +54,7 @@ const ResetPassword = () => {
     }
 
     if (!isPasswordValid) {
-      setError("Password does not meet requirements.");
+      setError("Password does not meet requirements");
       return;
     }
 
@@ -79,6 +79,8 @@ const ResetPassword = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="reset-container">
       <h2>Reset Your Password</h2>
 
@@ -93,6 +95,7 @@ const ResetPassword = () => {
               <input
                 type={showPassword ? 'text' : 'password'}
                 id="password"
+                placeholder="Enter new password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -106,65 +109,57 @@ const ResetPassword = () => {
               </button>
             </div>
           </div>
-        <AnimatePresence>
-         {password.length > 0 && (
-        <motion.div 
-        className="password-rules-box"
-        initial={{ height: 0, opacity: 0 }}
-        animate={{ height: 'auto', opacity: 1 }}
-        exit={{ height: 0, opacity: 0 }}
-      >
-        <div className="password-hint">Password must contain:</div>
-        <ul className="password-rules">
-          <li
-            className={`password-rule ${
-              rules.length ? "rule-valid" : "rule-invalid"
-            }`}
-          >
-            <span className="rule-icon">{rules.length ? "✅" : "❌"}</span>
-            At least 8 characters
-          </li>
-          <li
-            className={`password-rule ${
-              rules.number ? "rule-valid" : "rule-invalid"
-            }`}
-          >
-            <span className="rule-icon">{rules.number ? "✅" : "❌"}</span>
-            At least 1 number (0–9)
-          </li>
-          <li
-            className={`password-rule ${
-              rules.lower ? "rule-valid" : "rule-invalid"
-            }`}
-          >
-            <span className="rule-icon">{rules.lower ? "✅" : "❌"}</span>
-            At least 1 lowercase letter (a–z)
-          </li>
-          <li
-            className={`password-rule ${
-              rules.upper ? "rule-valid" : "rule-invalid"
-            }`}
-          >
-            <span className="rule-icon">{rules.upper ? "✅" : "❌"}</span>
-            At least 1 uppercase letter (A–Z)
-          </li>
-          <li
-            className={`password-rule ${
-              rules.special ? "rule-valid" : "rule-invalid"
-            }`}
-          >
-            <span className="rule-icon">{rules.special ? "✅" : "❌"}</span>
-            At least 1 special symbol (!@#$%^&*)
-          </li>
-        </ul>
-        </motion.div>
-         )}
-         </AnimatePresence>
+        <div className="password-rules-box">
+          <div className="password-hint">Password must contain:</div>
+          <ul className="password-rules">
+            <li
+              className={`password-rule ${
+                rules.length ? "rule-valid" : "rule-invalid"
+              }`}
+            >
+              <span className="rule-icon">{rules.length ? "✅" : "❌"}</span>
+              At least 8 characters
+            </li>
+            <li
+              className={`password-rule ${
+                rules.number ? "rule-valid" : "rule-invalid"
+              }`}
+            >
+              <span className="rule-icon">{rules.number ? "✅" : "❌"}</span>
+              At least 1 number (0–9)
+            </li>
+            <li
+              className={`password-rule ${
+                rules.lower ? "rule-valid" : "rule-invalid"
+              }`}
+            >
+              <span className="rule-icon">{rules.lower ? "✅" : "❌"}</span>
+              At least 1 lowercase letter (a–z)
+            </li>
+            <li
+              className={`password-rule ${
+                rules.upper ? "rule-valid" : "rule-invalid"
+              }`}
+            >
+              <span className="rule-icon">{rules.upper ? "✅" : "❌"}</span>
+              At least 1 uppercase letter (A–Z)
+            </li>
+            <li
+              className={`password-rule ${
+                rules.special ? "rule-valid" : "rule-invalid"
+              }`}
+            >
+              <span className="rule-icon">{rules.special ? "✅" : "❌"}</span>
+              At least 1 special symbol (!@#$%^&*)
+            </li>
+          </ul>
+        </div>
         <button type="submit" disabled={loading || !isPasswordValid}>
           {loading ? "Resetting..." : "Reset Password"}
         </button>
       </form>
     </div>
+    </>
   );
 };
 
