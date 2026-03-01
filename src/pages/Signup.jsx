@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { FaEye, FaEyeSlash, FaGoogle, FaGithub } from 'react-icons/fa';
 import supabase from '../utils/supabaseClient';
 import '../styles/Auth.css';
-import Navbar from '../components/Navbar';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -116,7 +115,6 @@ const Signup = () => {
 
   return (
     <>
-    <Navbar />
     <div className="auth-container">
       <motion.div 
         className="auth-form-container"
@@ -261,6 +259,7 @@ const Signup = () => {
 };
 
 export default Signup;
+
 
 
 
