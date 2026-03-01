@@ -1,11 +1,9 @@
 import React from 'react';
 import './PrivacyTerms.css'; // Import the CSS file
-import Navbar from '../components/Navbar';
 
 const PrivacyPolicy = () => {
   return (
     <>
-    <Navbar />
     <div className="policy-container">
       <h1>Privacy Policy</h1>
       <p>Last updated: March 2025</p>
@@ -60,3 +58,4 @@ const PrivacyPolicy = () => {
 };
 
 export default PrivacyPolicy;
+
