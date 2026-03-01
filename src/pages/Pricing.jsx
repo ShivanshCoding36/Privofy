@@ -3,7 +3,6 @@ import { motion,  } from 'framer-motion';
 import { supabase } from '../utils/supabaseClient';
 import { initializePayPal } from '../utils/paymentService';
 import './Pricing.css';
-import Navbar from '../components/Navbar';
 
 const pricingPackages = [
   { id: 3, credits: 10, price: 2, popular: false },
@@ -146,7 +145,6 @@ const Pricing = () => {
 
   return (
     <>
-    <Navbar />
     <div className="pricing-page">
       <motion.div 
   className="pricing-header"
@@ -250,3 +248,4 @@ const Pricing = () => {
 };
 
 export default Pricing; 
+
