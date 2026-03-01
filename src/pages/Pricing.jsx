@@ -3,16 +3,17 @@ import { motion,  } from 'framer-motion';
 import { supabase } from '../utils/supabaseClient';
 import { initializePayPal } from '../utils/paymentService';
 import './Pricing.css';
+import Navbar from '../components/Navbar';
 
 const pricingPackages = [
-  { id: 3, credits: 100, price: 2, popular: false },
-  { id: 4, credits: 150, price: 3, popular: false },
-  { id: 5, credits: 200, price: 4, popular: false },
-  { id: 6, credits: 300, price: 5, popular: false },
-  { id: 7, credits: 400, price: 6, popular: true },
-  { id: 8, credits: 500, price: 7, popular: false },
-  { id: 9, credits: 750, price: 9, popular: false },
-  { id: 10, credits: 1000, price: 12, popular: false },
+  { id: 3, credits: 10, price: 2, popular: false },
+  { id: 4, credits: 15, price: 3, popular: false },
+  { id: 5, credits: 20, price: 4, popular: false },
+  { id: 6, credits: 30, price: 5, popular: false },
+  { id: 7, credits: 40, price: 6, popular: true },
+  { id: 8, credits: 50, price: 7, popular: false },
+  { id: 9, credits: 75, price: 9, popular: false },
+  { id: 10, credits: 100, price: 12, popular: false },
 ];
 
 const Pricing = () => {
@@ -144,6 +145,8 @@ const Pricing = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="pricing-page">
       <motion.div 
   className="pricing-header"
@@ -242,6 +245,7 @@ const Pricing = () => {
         <p>New users get 12 free credits upon signup!</p>
       </motion.div>
     </div>
+    </>
   );
 };
 
