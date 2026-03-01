@@ -33,7 +33,7 @@ function App() {
         }
       }
     );
-
+ 
     // Cleanup function
     return () => {
       subscription?.unsubscribe();
@@ -50,7 +50,8 @@ function App() {
             <Route path="/about" element={<AboutUs />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/pricing" element={<Pricing />} />
+            
+         {/*  <Route path="/pricing" element={<Pricing />} />*/}
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
@@ -71,4 +72,5 @@ function App() {
 }
 
 export default App;
+
 
