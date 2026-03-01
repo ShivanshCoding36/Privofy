@@ -1,11 +1,9 @@
 import React from 'react';
 import './PrivacyTerms.css'; // Import the CSS file
-import Navbar from '../components/Navbar';
 
 const Terms = () => {
   return (
     <>
-    <Navbar />
     <div className="policy-container">
       <h1>Terms & Conditions</h1>
       <p>Last updated: March 2025</p>
@@ -63,4 +61,5 @@ const Terms = () => {
 };
 
 export default Terms;
+
 
