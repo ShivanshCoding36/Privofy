@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../utils/supabaseClient';
-import { FaEye, FaEyeSlash, FaGoogle, FaGithub } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaGithub, FaLock, FaEnvelope } from 'react-icons/fa';
 import './Login.css';
+import Navbar from '../components/Navbar';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ const Login = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+ 
   const handleEmailLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -74,6 +76,8 @@ const Login = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="login-container">
       <motion.div
         className="login-card"
@@ -118,7 +122,6 @@ const Login = () => {
               </button>
             </div>
           </div>
-
           <motion.button
             type="submit"
             className="login-button"
@@ -158,8 +161,9 @@ const Login = () => {
           Don't have an account? <Link to="/signup">Sign up</Link>
         </p>
       </motion.div>
-    </div>
+    </div> </>
   );
+ 
 };
 
 export default Login;
