@@ -59,3 +59,37 @@
   padding: 10px;
   color: #f5f5f5;
 }
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  width: 1px;
+  height: 40px;
+  background: #c9d6e8;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Override global a / a:hover from PrivacyTerms.css and others */
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.navbar .logo-container:hover,
+.navbar .logo-container:focus {
+  text-decoration: none !important;
+}
+
+.navbar .logo-container h1 {
+  text-decoration: none !important;
+  color: #2c3e50;
+}
