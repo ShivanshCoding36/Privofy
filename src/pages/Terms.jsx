@@ -1,8 +1,11 @@
 import React from 'react';
 import './PrivacyTerms.css'; // Import the CSS file
+import Navbar from './components/Navbar';
 
 const Terms = () => {
   return (
+    <>
+    <Navbar />
     <div className="policy-container">
       <h1>Terms & Conditions</h1>
       <p>Last updated: March 2025</p>
@@ -52,9 +55,10 @@ const Terms = () => {
       <h2>8. Contact Us</h2>
       <p>
         If you have any questions about these terms, contact us at 
-        <a href="mailto:shivanshmathur221@gmail.com"> shivanshmathur221@gmail.com</a>.
+        <a href="mailto:support@privofy.com">support@privofy.com</a>.
       </p>
     </div>
+    </>
   );
 };
 
