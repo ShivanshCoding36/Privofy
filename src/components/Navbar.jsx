@@ -30,20 +30,44 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+ 
   
 
   return (
+    <>
+    <style>{`
+      .divder {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        width: 1px;
+        height: 40px;
+        background: #c9d6e8;;
+      }
+        .divder h1 {
+        color: #2c3e50;
+    font-size: 2em;
+    text-align: center;
+    margin: 0;
+    padding-left: 10px;
+        }
+    `}</style>
     <motion.nav 
       className={`navbar ${isScrolled ? 'scrolled' : ''}`}
-      initial={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 0.5, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <div className="navbar-container">
-        <Link to="/" className="logo-container">
-          <img src={Logo} alt="Air Quality Logo" />
+        <motion.div whileHover={{ scale: 1.03 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
+        <Link to="/" className="logo-container" >
+          <img src={Logo} alt="Privofy Logo" />
+          <div className="divder">
+            <h1>Privofy</h1>
+        </div>
+
         </Link>
-        
+        </motion.div>
         <div className="nav-links">
           <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
             Home
@@ -85,7 +109,7 @@ const Navbar = () => {
 </div>
 
       </div>
-    </motion.nav>
+    </motion.nav></>
   );
 };
 
