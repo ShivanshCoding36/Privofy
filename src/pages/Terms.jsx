@@ -1,6 +1,6 @@
 import React from 'react';
 import './PrivacyTerms.css'; // Import the CSS file
-import Navbar from './components/Navbar';
+import Navbar from '../components/Navbar';
 
 const Terms = () => {
   return (
@@ -63,3 +63,4 @@ const Terms = () => {
 };
 
 export default Terms;
+
